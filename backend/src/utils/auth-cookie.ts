@@ -8,7 +8,7 @@ function cookieOptions(): CookieOptions {
   return {
     httpOnly: true,
     secure: environment.isProduction,
-    sameSite: 'lax',
+    sameSite: environment.isProduction ? 'none' : 'lax',
     maxAge: 60 * 60 * 1000,
     path: '/',
   };

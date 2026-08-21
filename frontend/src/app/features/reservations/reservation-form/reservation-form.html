@@ -1,0 +1,57 @@
+<main class="reservation-page">
+  <section class="reservation-card">
+    <a [routerLink]="['/equipment', equipmentId]">← Back to equipment</a>
+    <p class="eyebrow">Equipment reservation</p>
+    <h1>Choose booking time</h1>
+
+    @if (errorMessage()) {
+      <div class="alert" role="alert">{{ errorMessage() }}</div>
+    }
+
+    @if (alternatives(); as options) {
+      <section class="suggestions" aria-labelledby="suggestions-title">
+        <h2 id="suggestions-title">Available alternatives</h2>
+        @if (options.nextSlot; as nextSlot) {
+          <button type="button" class="suggestion-row" (click)="useNextSlot()">
+            <span>Next time for this resource</span>
+            <strong>{{ nextSlot.startDateTime | date:'medium' }} – {{ nextSlot.endDateTime | date:'shortTime' }}</strong>
+          </button>
+        }
+        @for (resource of options.alternativeResources; track resource.id) {
+          <button type="button" class="suggestion-row" (click)="chooseAlternative(resource.id)">
+            <span>{{ resource.name }}</span><strong>{{ resource.location }}</strong>
+          </button>
+        }
+        @if (!options.nextSlot && options.alternativeResources.length === 0) {
+          <p>No suitable alternative was found in the next seven days.</p>
+        }
+        <button type="button" class="secondary-button" (click)="joinWaitlist()" [disabled]="joiningWaitlist()">
+          {{ joiningWaitlist() ? 'Joining waitlist…' : 'Join waitlist for this time' }}
+        </button>
+      </section>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <label for="startDateTime">Start time</label>
+      <input id="startDateTime" type="datetime-local" formControlName="startDateTime" />
+      @if (form.controls.startDateTime.touched && form.controls.startDateTime.invalid) { <small class="field-error">Choose a start time.</small> }
+
+      <label for="endDateTime">End time</label>
+      <input id="endDateTime" type="datetime-local" formControlName="endDateTime" />
+      @if (form.controls.endDateTime.touched && form.controls.endDateTime.invalid) { <small class="field-error">Choose an end time.</small> }
+      @if (form.touched && form.hasError('invalidTimeRange')) {
+        <small class="field-error">End time must be after start time.</small>
+      }
+
+      <label for="purpose">Purpose</label>
+      <textarea id="purpose" formControlName="purpose" rows="4"></textarea>
+      @if (form.controls.purpose.touched && form.controls.purpose.invalid) {
+        <small class="field-error">Purpose must contain 5–500 characters.</small>
+      }
+
+      <button type="submit" [disabled]="form.invalid || pending()">
+        {{ pending() ? 'Submitting…' : 'Submit reservation' }}
+      </button>
+    </form>
+  </section>
+</main>

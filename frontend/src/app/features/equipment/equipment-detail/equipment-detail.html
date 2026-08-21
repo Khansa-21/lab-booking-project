@@ -1,0 +1,26 @@
+<main class="detail-page">
+  <a routerLink="/equipment">← Back to equipment</a>
+
+  @if (errorMessage()) {
+    <div class="alert" role="alert">{{ errorMessage() }}</div>
+  } @else if (loading()) {
+    <p>Loading equipment…</p>
+  } @else if (equipment(); as item) {
+    <article class="detail-card">
+      <p class="eyebrow">{{ item.category.name }}</p>
+      <h1>{{ item.name }}</h1>
+      <p class="subtitle">{{ item.description || 'No description provided.' }}</p>
+      <dl class="profile-details">
+        <div><dt>Status</dt><dd>{{ item.status }}</dd></div>
+        <div><dt>Location</dt><dd>{{ item.location }}</dd></div>
+        <div><dt>Maximum booking</dt><dd>{{ item.maxBookingHours }} hours</dd></div>
+        <div><dt>Approval</dt><dd>{{ item.requiresApproval ? 'Required' : 'Not required' }}</dd></div>
+        <div><dt>Training</dt><dd>{{ item.requiresTraining ? 'Required before booking' : 'Not required' }}</dd></div>
+      </dl>
+      <app-availability-timeline [equipmentId]="item.id" />
+      @if (item.status === 'AVAILABLE') {
+        <a class="button-link" [routerLink]="['/equipment', item.id, 'book']">Book equipment</a>
+      }
+    </article>
+  }
+</main>

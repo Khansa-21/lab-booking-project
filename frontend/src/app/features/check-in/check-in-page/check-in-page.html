@@ -1,0 +1,19 @@
+<main class="check-in-page">
+  <a routerLink="/reservations">← Back to my reservations</a>
+  <p class="eyebrow">On-site check-in</p>
+  <h1>Reservation check-in QR</h1>
+  @if (errorMessage()) { <div class="alert" role="alert">{{ errorMessage() }}</div> }
+  @if (loading()) { <p>Loading check-in information...</p> } @else if (reservation(); as item) {
+    <section class="check-in-card">
+      <h2>{{ item.equipment?.name }}</h2>
+      <p>{{ item.startDateTime | date:'medium' }}</p>
+      @if (item.checkedInAt) {
+        <p class="success">Checked in at {{ item.checkedInAt | date:'shortTime' }}.</p>
+      } @else if (qrImage()) {
+        <img [src]="qrImage()" alt="Check-in QR code" />
+        <p class="check-in-code">{{ item.checkInCode }}</p>
+        <p class="hint">Show this QR or code to a staff member. Check-in opens 15 minutes before your booking.</p>
+      } @else { <p>This reservation does not have an active check-in code.</p> }
+    </section>
+  } @else { <p>Reservation not found.</p> }
+</main>

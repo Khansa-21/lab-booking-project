@@ -2,12 +2,14 @@
 
 # Compiled output
 /dist
+**/dist/
 /tmp
 /out-tsc
 /bazel-out
 
 # Node
 /node_modules
+**/node_modules/
 npm-debug.log
 yarn-error.log
 
@@ -31,6 +33,7 @@ yarn-error.log
 
 # Miscellaneous
 /.angular/cache
+**/.angular/cache/
 .sass-cache/
 /connect.lock
 /coverage
@@ -42,3 +45,7 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+
+# Local environment files (examples remain tracked)
+**/.env
+!**/.env.example

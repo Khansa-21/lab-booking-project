@@ -1,0 +1,7 @@
+.check-in-page { max-width: 44rem; margin: auto; padding: 2rem; }
+.check-in-card { display: grid; justify-items: center; gap: 0.75rem; margin-top: 1.5rem; padding: 1.5rem; border: 1px solid #dce3ef; border-radius: 0.9rem; background: #fff; text-align: center; }
+.check-in-card h2, .check-in-card p { margin: 0; }
+.check-in-card img { width: min(100%, 16rem); }
+.check-in-code { padding: 0.5rem 0.75rem; border-radius: 0.4rem; background: #f3f6fb; font-family: monospace; font-size: 1.1rem; font-weight: 700; letter-spacing: 0.1em; }
+.hint { color: #667085; }
+.success { color: #166534; font-weight: 650; }

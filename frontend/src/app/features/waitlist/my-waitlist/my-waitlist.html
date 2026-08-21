@@ -1,0 +1,19 @@
+<main class="waitlist-page">
+  <p class="eyebrow">Booking support</p>
+  <h1>My waitlist</h1>
+  <p class="subtitle">You will be promoted when a matching slot is released.</p>
+
+  @if (errorMessage()) { <div class="alert" role="alert">{{ errorMessage() }}</div> }
+  @if (loading()) {
+    <p>Loading waitlist…</p>
+  } @else {
+    <section class="waitlist-list">
+      @for (entry of entries(); track entry.id) {
+        <article class="waitlist-row">
+          <div><h2>{{ entry.equipment?.name }}</h2><p>{{ entry.startDateTime | date:'medium' }} – {{ entry.endDateTime | date:'shortTime' }}</p><p>{{ entry.purpose }}</p></div>
+          <div class="waitlist-action"><strong>{{ entry.status }}</strong>@if (entry.status === 'WAITING') { <button type="button" (click)="cancel(entry.id)" [disabled]="cancellingId() !== null">{{ cancellingId() === entry.id ? 'Cancelling…' : 'Leave waitlist' }}</button> }</div>
+        </article>
+      } @empty { <p class="empty-state">You are not waiting for any resource.</p> }
+    </section>
+  }
+</main>

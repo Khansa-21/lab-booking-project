@@ -1,0 +1,29 @@
+<section class="availability-panel" aria-labelledby="availability-title">
+  <div class="timeline-header">
+    <div>
+      <p class="eyebrow">Availability</p>
+      <h2 id="availability-title">Daily schedule</h2>
+    </div>
+    <label>
+      <span class="visually-hidden">Select schedule date</span>
+      <input type="date" [value]="selectedDate()" (change)="updateDate($any($event.target).value)" />
+    </label>
+  </div>
+
+  @if (errorMessage()) {
+    <div class="alert" role="alert">{{ errorMessage() }}</div>
+  } @else if (loading()) {
+    <p class="timeline-state">Loading schedule…</p>
+  } @else {
+    <div class="timeline-scroll">
+      <div class="time-labels"><span>12 AM</span><span>6 AM</span><span>12 PM</span><span>6 PM</span><span>12 AM</span></div>
+      <div class="timeline-track" aria-label="Booked periods shown in blue">
+        @for (bar of timelineBars(); track bar.startDateTime + bar.endDateTime) {
+          <div class="booking-bar" [class.compact]="!bar.showLabel" [style.left.%]="bar.left" [style.width.%]="bar.width" [attr.aria-label]="'Booked from ' + (bar.startDateTime | date:'shortTime') + ' to ' + (bar.endDateTime | date:'shortTime')" [attr.title]="'Booked: ' + (bar.startDateTime | date:'shortTime') + ' to ' + (bar.endDateTime | date:'shortTime')">@if (bar.showLabel) { Booked }</div>
+        }
+        @if (intervals().length === 0) { <span class="available-label">Available all day</span> }
+      </div>
+    </div>
+    <p class="timeline-note">Booked blocks include pending and approved reservations. Availability is checked again when you submit a booking.</p>
+  }
+</section>

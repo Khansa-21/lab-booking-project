@@ -1,0 +1,74 @@
+<main class="home-page">
+  <header class="home-nav">
+    <a class="home-brand" routerLink="/" aria-label="University Resource Hub home">
+      <span class="brand-mark" aria-hidden="true">UR</span>
+      <span>University Resource Hub</span>
+    </a>
+
+    <nav aria-label="Homepage navigation">
+      <a href="#resources">Resources</a>
+      <a href="#how-it-works">How it works</a>
+      <a class="nav-login" routerLink="/login">Login</a>
+    </nav>
+  </header>
+
+  <section class="hero" aria-labelledby="hero-title">
+    <p class="eyebrow">University resource operations</p>
+    <h1 id="hero-title">Book university resources without the hassle.</h1>
+    <p class="hero-copy">
+      Find the right lab or equipment, see real availability, and reserve practical time in one place.
+    </p>
+    <div class="hero-actions">
+      <a class="primary-action" routerLink="/login" [queryParams]="{ returnUrl: '/equipment' }">
+        Find resources
+      </a>
+      <a class="secondary-action" routerLink="/login">Sign in</a>
+    </div>
+    <p class="hero-note">Built for students, teachers, and resource administrators.</p>
+  </section>
+
+  <section id="how-it-works" class="process-section" aria-labelledby="how-it-works-title">
+    <div>
+      <p class="eyebrow">Simple process</p>
+      <h2 id="how-it-works-title">How it works</h2>
+    </div>
+    <ol class="process-list">
+      <li><span>01</span><strong>Search</strong><small>Find a lab or resource.</small></li>
+      <li><span>02</span><strong>Check availability</strong><small>View the live time schedule.</small></li>
+      <li><span>03</span><strong>Reserve</strong><small>Request your practical session.</small></li>
+      <li><span>04</span><strong>Check in</strong><small>Use your booking QR code.</small></li>
+    </ol>
+  </section>
+
+  <section class="features-section" aria-labelledby="features-title">
+    <div class="section-heading">
+      <p class="eyebrow">Designed for real campus work</p>
+      <h2 id="features-title">Beyond a normal booking form</h2>
+    </div>
+    <div class="feature-grid">
+      <article><span>↗</span><h3>Smart alternatives</h3><p>Get another available resource or time when your first choice is busy.</p></article>
+      <article><span>↺</span><h3>Waitlist</h3><p>Join a queue and receive a place when a suitable booking opens.</p></article>
+      <article><span>⌁</span><h3>QR check-in</h3><p>Confirm attendance quickly and release unused resource time.</p></article>
+      <article><span>✓</span><h3>Training eligibility</h3><p>Reserve specialist equipment only after the required training is complete.</p></article>
+    </div>
+  </section>
+
+  <section id="resources" class="resource-section" aria-labelledby="resources-title">
+    <div class="section-heading">
+      <p class="eyebrow">One hub, many resources</p>
+      <h2 id="resources-title">Made for university spaces and equipment</h2>
+    </div>
+    <ul class="resource-types">
+      <li>Labs</li>
+      <li>Cameras</li>
+      <li>Projectors</li>
+      <li>Specialist equipment</li>
+    </ul>
+  </section>
+
+  <footer class="home-footer">
+    <a class="home-brand" routerLink="/"><span class="brand-mark" aria-hidden="true">UR</span><span>University Resource Hub</span></a>
+    <p>Clear schedules. Fair access. Better use of campus resources.</p>
+    <a routerLink="/login">Sign in to continue</a>
+  </footer>
+</main>

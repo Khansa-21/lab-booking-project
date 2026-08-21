@@ -1,0 +1,29 @@
+<main class="admin-page">
+  <p class="eyebrow">Resource operations</p>
+  <h1>Pending approvals</h1>
+  <p class="subtitle">Review requests that need staff approval.</p>
+
+  @if (errorMessage()) { <div class="alert" role="alert">{{ errorMessage() }}</div> }
+  @if (loading()) {
+    <p>Loading pending approvals…</p>
+  } @else if (reservations().length === 0) {
+    <p class="empty-state">No reservations require approval.</p>
+  } @else {
+    <section class="approval-list">
+      @for (reservation of reservations(); track reservation.id) {
+        <article class="approval-row">
+          <div>
+            <h2>{{ reservation.equipment?.name }}</h2>
+            <p>{{ reservation.user?.name }} · {{ reservation.user?.email }}</p>
+            <p>{{ reservation.startDateTime | date:'medium' }} – {{ reservation.endDateTime | date:'shortTime' }}</p>
+            <p>{{ reservation.purpose }}</p>
+          </div>
+          <div class="review-actions">
+            <button type="button" (click)="review(reservation.id, 'APPROVE')" [disabled]="processingId() !== null">Approve</button>
+            <button type="button" class="reject-button" (click)="review(reservation.id, 'REJECT')" [disabled]="processingId() !== null">Reject</button>
+          </div>
+        </article>
+      }
+    </section>
+  }
+</main>

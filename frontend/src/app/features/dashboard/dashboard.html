@@ -1,0 +1,33 @@
+<main class="student-dashboard">
+  <section class="dashboard-intro">
+    @if (user(); as currentUser) {
+      <p class="eyebrow">Student workspace</p>
+      <h1>Good morning, {{ currentUser.name }}</h1>
+      <p class="subtitle">Manage your university resources and bookings.</p>
+    }
+  </section>
+
+  @if (errorMessage()) { <div class="alert" role="alert">{{ errorMessage() }}</div> }
+
+  @if (loading()) {
+    <p>Loading your booking summary...</p>
+  } @else {
+    <section class="booking-counts" aria-label="Booking summary">
+      <article><strong>{{ upcoming().length }}</strong><span>Upcoming</span></article>
+      <article><strong>{{ pending().length }}</strong><span>Pending</span></article>
+      <article><strong>{{ completed().length }}</strong><span>Completed</span></article>
+    </section>
+
+    @if (upcoming()[0]; as item) {
+      <section class="next-booking">
+        <div><p class="eyebrow">Next booking</p><h2>{{ item.equipment?.name }}</h2><p>{{ item.startDateTime | date:'medium' }} – {{ item.endDateTime | date:'shortTime' }}</p></div>
+        <a class="button-link" routerLink="/equipment">View resources</a>
+      </section>
+    } @else {
+      <section class="empty-booking">
+        <div><p class="eyebrow">Plan your lab time</p><h2>Your schedule is open</h2><p>Choose a resource, check its availability, and reserve a practical session.</p></div>
+        <a class="button-link" routerLink="/equipment">Find a resource</a>
+      </section>
+    }
+  }
+</main>

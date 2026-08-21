@@ -1,0 +1,45 @@
+<main class="catalogue-page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Resource availability</p>
+      <h1>Find a resource</h1>
+    </div>
+  </header>
+
+  <form class="filters" [formGroup]="filters" (ngSubmit)="applyFilters()">
+    <label>Search <input formControlName="search" placeholder="Name or location" /></label>
+    <label>
+      Category
+      <select formControlName="categoryId"><option value="">All categories</option>@for (category of categories(); track category.id) { <option [value]="category.id">{{ category.name }}</option> }</select>
+    </label>
+    <label>
+      Status
+      <select formControlName="status"><option value="">All statuses</option>@for (status of statuses; track status) { <option [value]="status">{{ status }}</option> }</select>
+    </label>
+    <div class="filter-actions"><button type="submit" [disabled]="loading()">Apply</button><button type="button" class="secondary-button" (click)="clearFilters()">Clear</button></div>
+  </form>
+
+  @if (errorMessage()) {
+    <div class="alert" role="alert">{{ errorMessage() }}</div>
+  } @else if (loading()) {
+    <p class="state-message">Loading resources…</p>
+  } @else if (equipment().length === 0) {
+    <p class="state-message">No resources match these filters.</p>
+  } @else {
+    <section class="resource-list" aria-label="Resource results">
+      @for (item of equipment(); track item.id) {
+        <article class="resource-row">
+          <div class="resource-main">
+            <p class="eyebrow">{{ item.category.name }}</p>
+            <h2>{{ item.name }}</h2>
+            <p>{{ item.location }} · {{ item.description || 'No description provided.' }}</p>
+          </div>
+          <div class="resource-action">
+            <span class="status" [attr.data-status]="item.status">{{ item.status }}</span>
+            <a [routerLink]="['/equipment', item.id]">View schedule</a>
+          </div>
+        </article>
+      }
+    </section>
+  }
+</main>

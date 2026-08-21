@@ -1,0 +1,31 @@
+<main class="admin-page">
+  <p class="eyebrow">Resource operations</p>
+  <h1>Operations overview</h1>
+  <p class="subtitle">A live summary of today’s university resource operations.</p>
+  @if (errorMessage()) { <div class="alert" role="alert">{{ errorMessage() }}</div> }
+  @if (loading()) {
+    <p>Loading operations data...</p>
+  } @else if (summary(); as data) {
+    <section class="metric-grid">
+      <article><strong>{{ data.todayReservations }}</strong><span>Today’s reservations</span></article>
+      <article><strong>{{ data.pendingApprovals }}</strong><span>Pending approval</span></article>
+      <article><strong>{{ data.maintenanceIssues }}</strong><span>Maintenance issues</span></article>
+      <article><strong>{{ data.noShows }}</strong><span>No-shows today</span></article>
+    </section>
+    <section class="operations-grid">
+      <article class="operations-panel">
+        <h2>Needs attention</h2>
+        @for (item of data.attention; track item.label) { <a class="attention-row" [routerLink]="item.link"><strong>{{ item.label }}</strong><span>{{ item.detail }}</span></a> }
+        @empty { <p>No immediate action needed.</p> }
+      </article>
+      <article class="operations-panel">
+        <h2>Today’s utilization</h2>
+        @for (item of data.utilization; track item.category) {
+          <div class="utilization-row"><span>{{ item.category }}</span><strong>{{ item.percent }}%</strong><div class="utilization-bar"><i [style.width.%]="item.percent"></i></div></div>
+        } @empty { <p>No booked resource time today.</p> }
+        @if (data.hiddenUtilizationCount) { <p class="utilization-note">{{ data.hiddenUtilizationCount }} more active categor{{ data.hiddenUtilizationCount === 1 ? 'y' : 'ies' }} are not shown.</p> }
+      </article>
+    </section>
+    <div class="action-links"><a class="button-link" routerLink="/admin/approvals">Review approvals</a><a class="button-link secondary-button" routerLink="/admin/check-ins">Open check-ins</a><a class="button-link secondary-button" routerLink="/admin/resources">Manage resources</a></div>
+  }
+</main>

@@ -1,0 +1,7 @@
+.waitlist-page { max-width: 64rem; margin: auto; padding: 2rem; }
+.waitlist-list { display: grid; gap: 0.75rem; }
+.waitlist-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.25rem; border: 1px solid rgba(198, 216, 216, 0.95); border-radius: 0.9rem; background: linear-gradient(125deg, rgba(255,255,255,0.88), rgba(232,243,240,0.7)); box-shadow: inset 0 1px rgba(255,255,255,0.9), 0 0.65rem 1.4rem rgba(35,77,77,0.06); }
+.waitlist-row h2 { margin: 0; font-size: 1rem; }.waitlist-row p { margin: 0.35rem 0; color: #667085; }
+.waitlist-action { display: grid; justify-items: end; gap: 0.6rem; }.waitlist-action button { margin: 0; background: #b42318; }
+.empty-state { padding: 2rem; border: 1px dashed #bbc5d6; text-align: center; }
+@media (max-width: 40rem) { .waitlist-page { padding: 1.25rem; } .waitlist-row { align-items: flex-start; flex-direction: column; } .waitlist-action { justify-items: start; } }

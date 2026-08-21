@@ -1,0 +1,9 @@
+.check-in-management-page { max-width: 72rem; margin: auto; padding: 2rem; }
+.check-in-grid { display: grid; grid-template-columns: minmax(18rem, 0.8fr) minmax(22rem, 1.2fr); gap: 1rem; margin-top: 1.5rem; }
+.panel { padding: 1.25rem; border: 1px solid #dce3ef; border-radius: 0.75rem; background: #fff; }
+.panel h2 { margin-top: 0; font-size: 1.15rem; }
+.check-in-row { display: flex; justify-content: space-between; gap: 1rem; padding: 0.8rem 0; border-top: 1px solid #edf0f5; }
+.check-in-row span { display: grid; gap: 0.2rem; }
+.check-in-row small { color: #667085; }
+.checked-in, .success { color: #166534; }
+@media (max-width: 52rem) { .check-in-management-page { padding: 1.25rem; } .check-in-grid { grid-template-columns: 1fr; } }

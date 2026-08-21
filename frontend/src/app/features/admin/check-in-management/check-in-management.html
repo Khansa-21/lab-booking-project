@@ -1,0 +1,25 @@
+<main class="check-in-management-page">
+  <p class="eyebrow">On-site operations</p>
+  <h1>Today's check-ins</h1>
+  <p class="subtitle">Scan a QR with a scanner or enter the 12-character check-in code.</p>
+  @if (errorMessage()) { <div class="alert" role="alert">{{ errorMessage() }}</div> }
+  @if (successMessage()) { <p class="success" role="status">{{ successMessage() }}</p> }
+  <section class="check-in-grid">
+    <article class="panel">
+      <h2>Verify check-in</h2>
+      <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        <label>Check-in code<input formControlName="code" maxlength="12" placeholder="Example: A1B2C3D4E5F6" /></label>
+        @if (form.controls.code.touched && form.controls.code.invalid) { <small class="field-error">Enter exactly 12 letters or numbers.</small> }
+        <button type="submit" [disabled]="checkingIn()">{{ checkingIn() ? 'Verifying...' : 'Check in' }}</button>
+      </form>
+    </article>
+    <article class="panel">
+      <h2>Today’s reservations</h2>
+      @if (loading()) { <p>Loading reservations...</p> } @else {
+        @for (reservation of reservations(); track reservation.id) {
+          <div class="check-in-row"><span><strong>{{ reservation.equipment?.name }}</strong><small>{{ reservation.user?.name }} · {{ reservation.startDateTime | date:'shortTime' }}</small></span><strong [class.checked-in]="reservation.checkedInAt">{{ reservation.checkedInAt ? 'CHECKED IN' : reservation.status }}</strong></div>
+        } @empty { <p>No approved reservations today.</p> }
+      }
+    </article>
+  </section>
+</main>

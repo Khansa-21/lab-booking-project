@@ -1,0 +1,7 @@
+.reservation-page { min-height: 100vh; display: grid; place-items: center; padding: 1.25rem; }
+.reservation-card { width: min(100%, 34rem); padding: 2rem; border: 1px solid #dce3ef; border-radius: 1rem; background: white; }
+textarea { width: 100%; resize: vertical; border: 1px solid #bbc5d6; border-radius: 0.55rem; padding: 0.75rem; font: inherit; }
+.suggestions { display: grid; gap: 0.6rem; margin: 1rem 0; padding: 1rem; border: 1px solid #cdd9f5; border-radius: 0.7rem; background: #f8faff; }
+.suggestions h2 { margin: 0; font-size: 1rem; }
+.suggestion-row { display: flex; justify-content: space-between; gap: 1rem; margin: 0; padding: 0.7rem; background: #fff; color: #1747bd; text-align: left; }
+.suggestion-row strong { color: #344054; }

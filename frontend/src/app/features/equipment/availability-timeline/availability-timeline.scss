@@ -1,0 +1,13 @@
+.availability-panel { margin: 1.5rem 0; padding: 1.25rem; border: 1px solid #dce3ef; border-radius: 0.75rem; background: #fff; }
+.timeline-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.timeline-header h2 { margin: 0.25rem 0 0; font-size: 1.1rem; }
+.timeline-header input { min-width: 10rem; }
+.timeline-scroll { min-width: 34rem; margin-top: 1.5rem; }
+.time-labels { display: flex; justify-content: space-between; color: #667085; font-size: 0.75rem; }
+.timeline-track { position: relative; height: 4.5rem; margin-top: 0.5rem; overflow: hidden; border: 1px solid #dce3ef; border-radius: 0.5rem; background: repeating-linear-gradient(90deg, #f8fafc 0, #f8fafc calc(25% - 1px), #dce3ef calc(25% - 1px), #dce3ef 25%); }
+.booking-bar { position: absolute; top: 1rem; min-width: 0.2rem; height: 2.5rem; overflow: hidden; padding: 0.65rem; border-radius: 0.35rem; background: #1d666b; color: #fff; font-size: 0.75rem; font-weight: 700; white-space: nowrap; }
+.booking-bar.compact { padding-inline: 0; }
+.available-label { position: absolute; inset: 1.45rem 0 auto; text-align: center; color: #087443; font-weight: 650; }
+.timeline-note, .timeline-state { color: #667085; font-size: 0.85rem; line-height: 1.5; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (max-width: 42rem) { .availability-panel { overflow-x: auto; } .timeline-header { align-items: flex-start; flex-direction: column; } }

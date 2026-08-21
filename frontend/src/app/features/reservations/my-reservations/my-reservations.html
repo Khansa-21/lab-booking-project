@@ -1,0 +1,39 @@
+<main class="reservations-page">
+  <header class="page-header">
+    <div><p class="eyebrow">University Lab Booking</p><h1>My reservations</h1></div>
+    <a class="button-link secondary-button" routerLink="/equipment">Browse equipment</a>
+  </header>
+
+  @if (errorMessage()) {
+    <div class="alert" role="alert">{{ errorMessage() }}</div>
+  }
+
+  @if (loading()) {
+    <p>Loading reservations…</p>
+  } @else if (reservations().length === 0) {
+    <p class="empty-state">You have no reservations yet.</p>
+  } @else {
+    <section class="reservation-list">
+      @for (reservation of reservations(); track reservation.id) {
+        <article class="reservation-item">
+          <div>
+            <h2>{{ reservation.equipment?.name || 'Equipment' }}</h2>
+            <p>{{ reservation.startDateTime | date:'medium' }} – {{ reservation.endDateTime | date:'shortTime' }}</p>
+            <p>{{ reservation.equipment?.location }} · {{ reservation.purpose }}</p>
+          </div>
+          <div class="reservation-actions">
+            <strong>{{ reservation.status }}</strong>
+            @if (reservation.status === 'APPROVED' && reservation.checkInCode) {
+              <a class="text-action" [routerLink]="['/check-in', reservation.id]">Show check-in QR</a>
+            }
+            @if (canCancel(reservation)) {
+              <button type="button" (click)="cancel(reservation.id)" [disabled]="cancellingId() !== null">
+                {{ cancellingId() === reservation.id ? 'Cancelling…' : 'Cancel' }}
+              </button>
+            }
+          </div>
+        </article>
+      }
+    </section>
+  }
+</main>

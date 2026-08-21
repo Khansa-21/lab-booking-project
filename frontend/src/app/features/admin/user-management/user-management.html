@@ -1,0 +1,38 @@
+<main class="user-management-page">
+  <p class="eyebrow">Access management</p>
+  <h1>Manage teaching accounts</h1>
+  <p class="subtitle">Public signup creates students only. Administrators create teacher accounts here.</p>
+
+  @if (errorMessage()) { <div class="alert" role="alert">{{ errorMessage() }}</div> }
+  @if (successMessage()) { <p class="success" role="status">{{ successMessage() }}</p> }
+
+  <section class="user-grid">
+    <article class="panel">
+      <h2>Create teacher</h2>
+      <form [formGroup]="form" (ngSubmit)="createTeacher()" novalidate>
+        <label>Name<input formControlName="name" autocomplete="name" /></label>
+        @if (form.controls.name.touched && form.controls.name.invalid) { <small class="field-error">Use 2-100 characters.</small> }
+        <label>Email<input type="email" formControlName="email" autocomplete="email" /></label>
+        @if (form.controls.email.touched && form.controls.email.invalid) { <small class="field-error">Enter a valid email address.</small> }
+        <label>Temporary password<input type="password" formControlName="password" autocomplete="new-password" /></label>
+        @if (form.controls.password.touched && form.controls.password.invalid) { <small class="field-error">Use 8-30 characters with uppercase, lowercase, number, and special character.</small> }
+        <p class="hint">8–30 characters: uppercase, lowercase, number and special character.</p>
+        <button type="submit" [disabled]="saving()">{{ saving() ? 'Creating...' : 'Create teacher' }}</button>
+      </form>
+    </article>
+
+    <article class="panel">
+      <h2>Account register</h2>
+      @if (loading()) {
+        <p>Loading accounts...</p>
+      } @else {
+        @for (user of users(); track user.id) {
+          <div class="user-row">
+            <span><strong>{{ user.name }}</strong><small>{{ user.email }}</small></span>
+            <span class="role">{{ user.role }}</span>
+          </div>
+        } @empty { <p>No accounts found.</p> }
+      }
+    </article>
+  </section>
+</main>

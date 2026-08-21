@@ -1,0 +1,13 @@
+.training-page { max-width: 72rem; margin: auto; padding: 2rem; }
+.training-grid { display: grid; grid-template-columns: minmax(18rem, 0.8fr) minmax(22rem, 1.2fr); gap: 1rem; margin-top: 1.5rem; }
+.panel { padding: 1.25rem; border: 1px solid #dce3ef; border-radius: 0.75rem; background: #fff; }
+.panel h2 { margin-top: 0; font-size: 1.15rem; }
+.record-row { padding: 0.8rem 0; border-top: 1px solid #edf0f5; }
+.record-row span { display: grid; gap: 0.2rem; }
+.record-row small { color: #667085; }
+.search-results { display: grid; max-height: 13rem; overflow-y: auto; border: 1px solid #dce3ef; border-radius: 0.55rem; background: #fff; }
+.user-result { display: grid; gap: 0.15rem; padding: 0.65rem 0.75rem; border-radius: 0; background: #fff; color: #172033; text-align: left; font-weight: 400; }
+.user-result:hover { background: #eaf0ff; color: #172033; }
+.user-result small { color: #667085; }
+.selected-user { margin: 0; color: #166534; font-size: 0.9rem; }
+@media (max-width: 52rem) { .training-page { padding: 1.25rem; } .training-grid { grid-template-columns: 1fr; } }

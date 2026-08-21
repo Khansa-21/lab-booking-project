@@ -1,0 +1,93 @@
+<main class="auth-page">
+  <section class="auth-card" aria-labelledby="signup-title">
+    <p class="eyebrow">University Lab Booking</p>
+    <h1 id="signup-title">Create student account</h1>
+    <p class="subtitle">Teachers and admins are created through controlled processes.</p>
+
+    @if (errorMessage()) {
+      <div class="alert" role="alert">{{ errorMessage() }}</div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <label for="name">Full name</label>
+      <input id="name" type="text" formControlName="name" autocomplete="name" />
+      @if (form.controls.name.touched && form.controls.name.invalid) {
+        <small class="field-error">Name must contain 2–100 characters.</small>
+      }
+
+      <label for="email">Email</label>
+      <input id="email" type="email" formControlName="email" autocomplete="email" />
+      @if (form.controls.email.touched && form.controls.email.invalid) {
+        <small class="field-error">Enter a valid email address.</small>
+      }
+
+      <label for="password">Password</label>
+      <div class="password-field">
+        <input
+          id="password"
+          [type]="showPassword() ? 'text' : 'password'"
+          formControlName="password"
+          autocomplete="new-password"
+        />
+        <button
+          type="button"
+          class="password-toggle"
+          (click)="showPassword.update((visible) => !visible)"
+          [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'"
+        >
+          @if (showPassword()) {
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M3 3l18 18M10.6 10.7a2 2 0 0 0 2.7 2.7M9.9 4.2A10.8 10.8 0 0 1 12 4c5.5 0 9 5.5 9 5.5a15.8 15.8 0 0 1-2.1 2.6M6.6 6.6A16.5 16.5 0 0 0 3 9.5S6.5 15 12 15c1 0 2-.2 2.8-.5" />
+            </svg>
+          } @else {
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M3 9.5S6.5 4 12 4s9 5.5 9 5.5S17.5 15 12 15 3 9.5 3 9.5Z" />
+              <circle cx="12" cy="9.5" r="2.5" />
+            </svg>
+          }
+        </button>
+      </div>
+      @if (form.controls.password.touched && form.controls.password.invalid) {
+        <small class="field-error">
+          Use 8–30 characters with uppercase, lowercase, number and special character.
+        </small>
+      }
+
+      <label for="confirmPassword">Confirm password</label>
+      <div class="password-field">
+        <input
+          id="confirmPassword"
+          [type]="showConfirmPassword() ? 'text' : 'password'"
+          formControlName="confirmPassword"
+          autocomplete="new-password"
+        />
+        <button
+          type="button"
+          class="password-toggle"
+          (click)="showConfirmPassword.update((visible) => !visible)"
+          [attr.aria-label]="showConfirmPassword() ? 'Hide confirm password' : 'Show confirm password'"
+        >
+          @if (showConfirmPassword()) {
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M3 3l18 18M10.6 10.7a2 2 0 0 0 2.7 2.7M9.9 4.2A10.8 10.8 0 0 1 12 4c5.5 0 9 5.5 9 5.5a15.8 15.8 0 0 1-2.1 2.6M6.6 6.6A16.5 16.5 0 0 0 3 9.5S6.5 15 12 15c1 0 2-.2 2.8-.5" />
+            </svg>
+          } @else {
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M3 9.5S6.5 4 12 4s9 5.5 9 5.5S17.5 15 12 15 3 9.5 3 9.5Z" />
+              <circle cx="12" cy="9.5" r="2.5" />
+            </svg>
+          }
+        </button>
+      </div>
+      @if (form.controls.confirmPassword.touched && form.hasError('passwordsMismatch')) {
+        <small class="field-error">Passwords must match.</small>
+      }
+
+      <button type="submit" [disabled]="form.invalid || pending()">
+        {{ pending() ? 'Creating account…' : 'Create account' }}
+      </button>
+    </form>
+
+    <p class="auth-link">Already registered? <a routerLink="/login">Sign in</a></p>
+  </section>
+</main>

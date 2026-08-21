@@ -1,0 +1,10 @@
+.user-management-page { max-width: 72rem; margin: auto; padding: 2rem; }
+.user-grid { display: grid; grid-template-columns: minmax(18rem, 0.8fr) minmax(22rem, 1.2fr); gap: 1rem; margin-top: 1.5rem; }
+.panel { padding: 1.25rem; border: 1px solid #dce3ef; border-radius: 0.75rem; background: #fff; }
+.panel h2 { margin-top: 0; font-size: 1.15rem; }
+.hint, .user-row small { color: #667085; font-size: 0.875rem; }
+.success { color: #166534; }
+.user-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.8rem 0; border-top: 1px solid #edf0f5; }
+.user-row span:first-child { display: grid; gap: 0.2rem; }
+.role { padding: 0.2rem 0.5rem; border-radius: 999px; background: #dfe8e3; color: #255b5a; font-size: 0.75rem; font-weight: 700; }
+@media (max-width: 52rem) { .user-management-page { padding: 1.25rem; } .user-grid { grid-template-columns: 1fr; } }

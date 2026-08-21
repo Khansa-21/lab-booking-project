@@ -1,0 +1,35 @@
+@if (isAuthenticated()) {
+  <div class="application-shell">
+    <header class="topbar">
+      <a class="brand" routerLink="/dashboard">University Resource Hub</a>
+      <div class="user-actions">
+        @if (user(); as currentUser) { <span>{{ currentUser.name }} · {{ currentUser.role }}</span> }
+        <button type="button" class="text-button" (click)="logout()" [disabled]="loggingOut()">Sign out</button>
+      </div>
+    </header>
+    <aside class="sidebar" [class.is-open]="mobileMenuOpen()">
+      <nav aria-label="Main navigation">
+        @if (!isAdmin()) {
+          <a routerLink="/dashboard" routerLinkActive="active" (click)="closeMenu()">Dashboard</a>
+          <a routerLink="/equipment" routerLinkActive="active" (click)="closeMenu()">Find resource</a>
+          <a routerLink="/reservations" routerLinkActive="active" (click)="closeMenu()">My bookings</a>
+          <a routerLink="/waitlist" routerLinkActive="active" (click)="closeMenu()">Waitlist</a>
+          <a routerLink="/eligibility" routerLinkActive="active" (click)="closeMenu()">My eligibility</a>
+        }
+        @if (isAdmin()) {
+          <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">Operations</a>
+          <a routerLink="/admin/resources" routerLinkActive="active" (click)="closeMenu()">Manage resources</a>
+          <a routerLink="/admin/users" routerLinkActive="active" (click)="closeMenu()">Manage users</a>
+        }
+        @if (isStaff()) {
+          <a routerLink="/admin/approvals" routerLinkActive="active" (click)="closeMenu()">Approvals</a>
+          <a routerLink="/admin/training" routerLinkActive="active" (click)="closeMenu()">Training</a>
+          <a routerLink="/admin/check-ins" routerLinkActive="active" (click)="closeMenu()">Check-ins</a>
+        }
+      </nav>
+    </aside>
+    <main class="workspace"><router-outlet /></main>
+  </div>
+} @else {
+  <router-outlet />
+}

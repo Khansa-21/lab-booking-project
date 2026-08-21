@@ -1,0 +1,34 @@
+<main class="training-page">
+  <p class="eyebrow">Eligibility operations</p>
+  <h1>Training management</h1>
+  <p class="subtitle">Mark a user eligible only after they complete the required resource training.</p>
+  @if (errorMessage()) { <div class="alert" role="alert">{{ errorMessage() }}</div> }
+  @if (data(); as management) {
+    <section class="training-grid">
+      <article class="panel">
+        <h2>Complete training</h2>
+        <form [formGroup]="form" (ngSubmit)="markComplete()" novalidate>
+          <label>User search<input [value]="userSearch()" (input)="searchUsers($any($event.target).value)" placeholder="Type at least 2 letters" autocomplete="off" /></label>
+          @if (userResults().length) {
+            <div class="search-results" role="listbox">
+              @for (user of userResults(); track user.id) {
+                <button type="button" class="user-result" (click)="selectUser(user)"><strong>{{ user.name }}</strong><small>{{ user.email }}</small></button>
+              }
+            </div>
+          }
+          @if (selectedUser(); as user) { <p class="selected-user">Selected: {{ user.name }}</p> }
+          @if (form.controls.userId.touched && form.controls.userId.invalid) { <small class="field-error">Search and select a user.</small> }
+          <label>Resource<select formControlName="equipmentId"><option [ngValue]="0">Select trained resource</option>@for (resource of management.resources; track resource.id) { <option [ngValue]="resource.id">{{ resource.name }} — {{ resource.location }}</option> }</select></label>
+          @if (form.controls.equipmentId.touched && form.controls.equipmentId.invalid) { <small class="field-error">Select a trained resource.</small> }
+          <button type="submit" [disabled]="saving()">{{ saving() ? 'Saving...' : 'Mark training complete' }}</button>
+        </form>
+      </article>
+      <article class="panel">
+        <h2>Completed records</h2>
+        @for (record of management.records; track record.id) {
+          <div class="record-row"><span><strong>{{ record.user.name }}</strong><small>{{ record.equipment.name }} · {{ record.completedAt | date:'mediumDate' }}</small></span></div>
+        } @empty { <p>No training records yet.</p> }
+      </article>
+    </section>
+  } @else if (loading()) { <p>Loading training data...</p> }
+</main>

@@ -1,0 +1,13 @@
+<main class="eligibility-page">
+  <p class="eyebrow">Training eligibility</p>
+  <h1>My completed training</h1>
+  <p class="subtitle">You can book resources listed here when they require training.</p>
+  @if (errorMessage()) { <div class="alert" role="alert">{{ errorMessage() }}</div> }
+  @if (loading()) { <p>Loading training records...</p> } @else {
+    <section class="record-list">
+      @for (record of records(); track record.id) {
+        <article><strong>{{ record.equipment.name }}</strong><span>{{ record.equipment.location }} · completed {{ record.completedAt | date:'mediumDate' }}</span></article>
+      } @empty { <p>You do not have any completed training yet.</p> }
+    </section>
+  }
+</main>

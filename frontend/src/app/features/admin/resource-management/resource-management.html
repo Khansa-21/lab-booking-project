@@ -1,0 +1,69 @@
+<main class="management-page">
+  <p class="eyebrow">Resource operations</p>
+  <h1>Manage categories and resources</h1>
+  <p class="subtitle">Create records here so students can find and book university resources.</p>
+
+  @if (errorMessage()) { <div class="alert" role="alert">{{ errorMessage() }}</div> }
+
+  <section class="management-grid">
+    <article class="management-panel">
+      <h2>{{ editingCategoryId() ? 'Edit category' : 'Add category' }}</h2>
+      <form [formGroup]="categoryForm" (ngSubmit)="saveCategory()" novalidate>
+        <label>Category name<input formControlName="name" /></label>
+        @if (categoryForm.controls.name.touched && categoryForm.controls.name.invalid) { <small class="field-error">Use 2-100 characters.</small> }
+        <label>Description<textarea formControlName="description" rows="3"></textarea></label>
+        @if (categoryForm.controls.description.touched && categoryForm.controls.description.invalid) { <small class="field-error">Description can be at most 1000 characters.</small> }
+        <label class="checkbox-label"><input type="checkbox" formControlName="isActive" /> Active for students</label>
+        <div class="form-actions">
+          <button type="submit" [disabled]="saving()">{{ editingCategoryId() ? 'Save category' : 'Add category' }}</button>
+          @if (editingCategoryId()) { <button type="button" class="secondary-button" (click)="resetCategoryForm()">Cancel</button> }
+        </div>
+      </form>
+
+      <h3>Categories</h3>
+      @for (category of categories(); track category.id) {
+        <div class="data-row"><span><strong>{{ category.name }}</strong><small>{{ category.isActive ? 'Active' : 'Inactive' }}</small></span><button type="button" class="text-action" (click)="editCategory(category)">Edit</button></div>
+      } @empty { <p>No categories yet.</p> }
+    </article>
+
+    <article class="management-panel">
+      <h2>{{ editingEquipmentId() ? 'Edit resource: ' + editingEquipmentName() : 'Add resource' }}</h2>
+      @if (editingEquipmentId()) { <p class="edit-note">You are updating an existing resource. Save resource applies these changes.</p> }
+      <form [formGroup]="equipmentForm" (ngSubmit)="saveEquipment()" novalidate>
+        <label>Category<select formControlName="categoryId"><option [ngValue]="0">Select category</option>@for (category of categories(); track category.id) { @if (category.isActive) { <option [ngValue]="category.id">{{ category.name }}</option> } }</select></label>
+        @if (equipmentForm.controls.categoryId.touched && equipmentForm.controls.categoryId.invalid) { <small class="field-error">Select a category.</small> }
+        <label>Resource name<input formControlName="name" /></label>
+        @if (equipmentForm.controls.name.touched && equipmentForm.controls.name.invalid) { <small class="field-error">Use 2-150 characters.</small> }
+        <label>Location<input formControlName="location" /></label>
+        @if (equipmentForm.controls.location.touched && equipmentForm.controls.location.invalid) { <small class="field-error">Use 2-150 characters.</small> }
+        <label>Description<textarea formControlName="description" rows="3"></textarea></label>
+        @if (equipmentForm.controls.description.touched && equipmentForm.controls.description.invalid) { <small class="field-error">Description can be at most 1000 characters.</small> }
+        <label>Image URL (optional)<input formControlName="imageUrl" placeholder="https://example.com/resource.jpg" /></label>
+        @if (equipmentForm.controls.imageUrl.touched && equipmentForm.controls.imageUrl.invalid) { <small class="field-error">Use a full http:// or https:// URL.</small> }
+        <div class="two-fields">
+          <label>Status<select formControlName="status">@for (status of statuses; track status) { <option [value]="status">{{ status }}</option> }</select></label>
+          <label>Audience<select formControlName="bookingAudience">@for (audience of audiences; track audience) { <option [value]="audience">{{ audience }}</option> }</select></label>
+        </div>
+        <label>Maximum booking hours<input type="number" min="0.01" max="24" step="0.5" formControlName="maxBookingHours" /></label>
+        @if (equipmentForm.controls.maxBookingHours.touched && equipmentForm.controls.maxBookingHours.invalid) { <small class="field-error">Enter a value above 0 and no more than 24 hours.</small> }
+        <label class="checkbox-label"><input type="checkbox" formControlName="requiresApproval" /> Requires staff approval</label>
+        <label class="checkbox-label"><input type="checkbox" formControlName="requiresTraining" /> Requires training before booking</label>
+        <div class="form-actions">
+          <button type="submit" [disabled]="saving()">{{ editingEquipmentId() ? 'Save resource' : 'Add resource' }}</button>
+          @if (editingEquipmentId()) { <button type="button" class="secondary-button" (click)="resetEquipmentForm()">Cancel</button> }
+        </div>
+      </form>
+    </article>
+  </section>
+
+  <section class="resource-register">
+    <h2>Resource register</h2>
+    @if (loading()) {
+      <p>Loading resources…</p>
+    } @else {
+      @for (item of equipment(); track item.id) {
+        <article class="resource-row"><div><strong>{{ item.name }}</strong><p>{{ item.category.name }} · {{ item.location }} · {{ item.status }}</p></div><button type="button" class="text-action" (click)="editEquipment(item)">Edit</button></article>
+      } @empty { <p>No resources yet. Add the first resource above.</p> }
+    }
+  </section>
+</main>

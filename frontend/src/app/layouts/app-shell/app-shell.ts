@@ -37,4 +37,8 @@ export class AppShell {
   closeMenu(): void {
     this.mobileMenuOpen.set(false);
   }
+
+  toggleMenu(): void {
+    this.mobileMenuOpen.update((isOpen) => !isOpen);
+  }
 }

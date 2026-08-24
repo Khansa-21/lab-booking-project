@@ -1,6 +1,8 @@
 .application-shell { min-height: 100vh; display: grid; grid-template-columns: 15rem 1fr; grid-template-rows: 4rem 1fr; background: #f4f1e8; }
 .topbar { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem; background: #263f41; color: #fff; }
+.brand-area { display: flex; align-items: center; gap: 0.7rem; }
 .brand { color: #fff; font-weight: 750; text-decoration: none; }
+.menu-button, .menu-backdrop { display: none; }
 .user-actions { display: flex; align-items: center; gap: 1rem; font-size: 0.9rem; }
 .text-button { margin: 0; padding: 0.45rem 0.7rem; background: transparent; border: 1px solid #7083a5; }
 .sidebar { padding: 1rem; border-right: 1px solid #d6d8cf; background: #eeece4; }
@@ -9,4 +11,18 @@
 .sidebar a:hover { background: #dfe8e3; color: #1d666b; }
 .sidebar a.active { border-left-color: #c5843d; background: #d7e5df; color: #164c50; }
 .workspace { min-width: 0; }
-@media (max-width: 44rem) { .application-shell { grid-template-columns: 1fr; grid-template-rows: auto auto 1fr; } .sidebar { border-right: 0; border-bottom: 1px solid #dce3ef; } .sidebar nav { grid-template-columns: repeat(3, 1fr); } .topbar { padding: 0 1rem; } .user-actions span { display: none; } }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+@media (max-width: 44rem) {
+  .application-shell { display: grid; grid-template-columns: 1fr; grid-template-rows: 4rem 1fr; }
+  .topbar { position: sticky; top: 0; z-index: 20; padding: 0 1rem; }
+  .menu-button { display: grid; width: 2.3rem; height: 2.3rem; place-items: center; padding: 0; border: 1px solid #718c8c; border-radius: 0.45rem; background: transparent; color: #fff; font-size: 1.2rem; }
+  .sidebar { position: fixed; z-index: 30; top: 4rem; bottom: 0; left: 0; width: min(18rem, 85vw); padding: 1rem; border: 0; box-shadow: 0.75rem 0 1.5rem rgba(19, 43, 43, 0.18); transform: translateX(-105%); transition: transform 180ms ease-out; overflow-y: auto; }
+  .sidebar.is-open { transform: translateX(0); }
+  .sidebar nav { grid-template-columns: 1fr; }
+  .menu-backdrop { display: block; position: fixed; z-index: 25; inset: 4rem 0 0; width: 100%; padding: 0; border: 0; border-radius: 0; background: rgba(20, 39, 39, 0.35); }
+  .workspace { grid-column: 1; }
+  .topbar { gap: 0.5rem; }
+  .user-actions { gap: 0.45rem; }
+  .user-actions span { display: none; }
+}

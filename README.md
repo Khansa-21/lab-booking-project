@@ -1,99 +1,106 @@
 # University Resource Hub
 
-A full-stack university resource booking system for shared labs and equipment. It replaces paper registers, messages, and spreadsheets with one clear workflow for availability, reservations, approvals, training, and check-in.
+University Resource Hub is a full-stack booking system for university labs and shared equipment. It replaces paper registers, messages, and spreadsheets with a clear online process for bookings, approvals, training, and check-ins.
 
-## Problem it solves
+## Live application
 
-Universities commonly share cameras, laboratories, microscopes, projectors, and specialist equipment. Manual records make it hard to prevent double bookings, confirm attendance, manage trained users, or identify unused resource time.
+- Frontend: https://lab-booking-project.vercel.app/
+- Frontend hosting: Vercel
+- Backend hosting: Azure App Service
+- Database: Azure SQL Database
 
-University Resource Hub treats these as operational resources, not shopping products. It helps universities provide fair access and better use their existing resources.
+## The problem
 
-## Features
+Universities share cameras, labs, projectors, microscopes, and other equipment. Manual booking records can cause double bookings, missed check-ins, untrained users, and unused time slots.
 
-- Public homepage explaining the platform and workflow
-- Secure signup, login, logout, and Brevo password reset
+This system helps students and staff find resources, check availability, reserve time, and manage resources fairly.
+
+## Main features
+
+- Public homepage for guests
+- Signup, login, logout, and password reset with Brevo email
 - Student, Teacher, and Admin roles
-- Availability-first resource search, schedule, and booking timeline
-- Collision-safe booking validation
-- Staff approval for restricted resources
-- Smart alternative resource/time suggestions
-- Waitlist with automatic promotion
+- Resource search with daily availability schedules
+- Booking validation that prevents time clashes
+- Staff approval for selected resources
+- Smart alternative resource and time suggestions
+- Waitlist with automatic promotion after a released booking
 - Training eligibility for specialist equipment
-- QR/code check-in and automatic no-show release
-- Admin management for users, categories, resources, approvals, training, and check-ins
-- Daily operations summary: reservations, approvals, maintenance issues, no-shows, and utilization
+- QR/code check-in
+- Automatic no-show release and booking completion checks
+- Admin pages for users, resources, approvals, training, check-ins, and operations
+- Mobile menu for small screens
 
-## Users
+## Roles
 
-| User | Main actions |
+| Role | What they can do |
 | --- | --- |
-| Guest | View homepage and sign in/sign up |
-| Student | Search, reserve, join waitlist, view eligibility, and show check-in QR |
-| Teacher | Student actions plus approvals, training completion, and check-ins |
-| Admin | Manage users, categories, resources, approvals, training, check-ins, and operations |
+| Guest | View the homepage, sign up, and sign in |
+| Student | Search, reserve, join a waitlist, view eligibility, and show QR check-in |
+| Teacher | Student actions plus approvals, training records, and check-ins |
+| Admin | Manage users, resources, approvals, training, check-ins, and daily operations |
 
-Public signup always creates a `STUDENT`. The browser cannot create an admin account.
+Public signup creates only a `STUDENT`. Admin accounts are not created from a public browser form.
 
-## Technology stack
+## Technology used
 
-- Frontend: Angular 22, TypeScript, Angular Router, Reactive Forms, RxJS, QRCode
+- Frontend: Angular 22, TypeScript, Reactive Forms, RxJS, Angular Router, QRCode
 - Backend: Node.js, Express 5, TypeScript
-- Database: Microsoft SQL Server with Sequelize ORM
+- Database: Microsoft SQL Server, Azure SQL Database, Sequelize ORM
 - Security: Zod, bcrypt, JWT in HttpOnly cookies, CORS, cookie-parser
 - Email: Brevo transactional email API
-- Scheduling: node-cron for local no-show/completion checks
+- Scheduler: node-cron
 
-## Architecture
-
-```text
-Angular frontend
-     |
-     | HTTP API requests
-     v
-Express + TypeScript backend
-     |
-     | Sequelize ORM
-     v
-Microsoft SQL Server
-```
-
-Frontend and backend are separate applications. Angular calls API URLs such as `/api/reservations`; it never imports backend TypeScript files directly.
-
-## Core booking flow
+## System design
 
 ```text
-Search resource
--> Check schedule and availability
--> Reserve a time
--> Backend validates role, training, duration, and overlap
--> Reservation is APPROVED or PENDING
--> Student checks in with QR/code
--> Unused booking becomes NO_SHOW after the grace period
--> Released slot can promote a waitlist user
+Angular frontend on Vercel
+        |
+        | HTTPS API requests
+        v
+Express backend on Azure App Service
+        |
+        | Sequelize ORM
+        v
+Azure SQL Database
 ```
 
-Overlap rule:
+The frontend and backend are separate apps. Angular sends HTTP requests such as `/api/reservations`. It does not import backend TypeScript files.
+
+## Booking flow
+
+```text
+Find resource
+-> Check its schedule
+-> Choose a future time
+-> Backend checks role, training, duration, and overlap
+-> Booking becomes APPROVED or PENDING
+-> Student checks in with a QR/code
+-> Missed check-in becomes NO_SHOW
+-> Released time can promote a waitlist user
+```
+
+The time clash rule is:
 
 ```text
 newStart < existingEnd AND newEnd > existingStart
 ```
 
-## Workspace structure
+## Project folders
 
 ```text
-frontend/     Angular UI, pages, services, guards, and layouts
-backend/      Express API, models, migrations, seeders, validators, and services
-README.md     Project documentation
+frontend/     Angular pages, services, guards, and layouts
+backend/      Express API, database models, migrations, seeders, and services
+README.md     Project guide
 ```
 
 ## Local setup
 
 ### Requirements
 
-- Node.js 22+
-- Microsoft SQL Server Developer Edition
-- SQL Server Management Studio (SSMS)
-- Brevo account with verified sender email
+- Node.js 22 or newer
+- SQL Server Developer Edition and SSMS, or Azure SQL Database
+- Brevo account with a verified sender email
 
 ### Backend
 
@@ -105,7 +112,7 @@ npm run db:migrate
 npm run dev
 ```
 
-Configure `backend/.env`. Never commit it:
+Example local `backend/.env` values:
 
 ```env
 PORT=3000
@@ -123,17 +130,9 @@ BREVO_SENDER_EMAIL=your_verified_sender_email
 BREVO_SENDER_NAME=University Resource Hub
 ```
 
-Health endpoint: `http://localhost:3000/api/health`
-
-Optional demo equipment:
-
-```powershell
-npx sequelize-cli db:seed --seed 20260820040000-seed-demo-equipment.cjs
-```
+Never push `.env` to GitHub.
 
 ### Frontend
-
-Open another terminal:
 
 ```powershell
 cd frontend
@@ -151,8 +150,8 @@ npm run dev
 npm run build
 npm run db:migrate
 npm run db:migrate:status
-npm run db:migrate:undo
 npm run db:seed
+npm run db:seed:ui
 
 # Frontend
 npm start
@@ -160,43 +159,35 @@ npm run build
 npm test -- --watch=false
 ```
 
-## Password reset flow
+## Password reset
 
-1. User enters their email on `/forgot-password`.
-2. Backend creates a random one-time token that expires in 15 minutes.
-3. Only the token hash is saved in SQL Server.
+1. User enters an email on `/forgot-password`.
+2. Backend creates a one-time token that expires after 15 minutes.
+3. The database stores only a hash of that token.
 4. Brevo emails the reset link.
-5. User sets a valid new password on `/reset-password`.
-6. Backend updates the bcrypt password hash and clears the token.
+5. User creates a new valid password on `/reset-password`.
+6. Backend clears the token after use.
 
-The email response is intentionally generic: it does not reveal whether an account exists.
+The response does not reveal whether an account exists.
 
-## Deployment plan
+## Azure deployment notes
 
-```text
-GitHub repository
-├── frontend/ -> Vercel
-└── backend/  -> Render Web Service
-                  |
-                  -> Azure SQL Database
-```
-
-- Vercel hosts Angular.
-- Render hosts Express.
-- Azure SQL Database is required in production because Render cannot reach SQL Server on a personal PC.
-- Keep secrets only in Render environment variables, never GitHub or Angular files.
-- Configure final-domain CORS and cookies before production.
-- Use an always-running backend or a separate Render Cron Job for reliable no-show scheduling because free services can sleep.
+- Vercel builds and hosts the Angular frontend from `frontend/`.
+- Azure App Service runs the Express backend from `backend/`.
+- Azure SQL Database stores production data.
+- Store database details, JWT secret, and Brevo key in Azure App Service environment variables.
+- Use `DB_ENCRYPT=true` and `DB_TRUST_SERVER_CERTIFICATE=false` with Azure SQL.
+- Add the Azure App Service outbound IP addresses to the Azure SQL firewall if needed.
+- The scheduler runs on backend startup and every minute. On a restart, it catches up missed no-show and completion checks.
 
 ## Future improvements
 
-- Monthly/semester analytics and exportable reports
-- Rate limiting for reset requests
-- Brevo templates and delivery-event webhooks
-- University SSO
-- Waitlist and approval email notifications
-- Dedicated production scheduler
+- Monthly and semester reports
+- Rate limits for password reset requests
+- Waitlist and approval email alerts
+- University single sign-on
+- A separate production scheduler if the app grows
 
 ## Learning value
 
-This project demonstrates Angular feature structure, TypeScript APIs, SQL relations, migrations, ORM models, validation, authentication, role authorization, transactional booking logic, email delivery, scheduled jobs, and deployment planning.
+This project shows Angular structure, TypeScript APIs, SQL relations, migrations, ORM models, validation, authentication, roles, booking logic, email, scheduled jobs, and cloud deployment.

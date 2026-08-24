@@ -1,14 +1,26 @@
 @if (isAuthenticated()) {
   <div class="application-shell">
     <header class="topbar">
-      <a class="brand" routerLink="/dashboard">University Resource Hub</a>
+      <div class="brand-area">
+        <button
+          type="button"
+          class="menu-button"
+          (click)="toggleMenu()"
+          [attr.aria-expanded]="mobileMenuOpen()"
+          aria-controls="main-navigation"
+        >
+          <span aria-hidden="true">☰</span><span class="visually-hidden">Toggle navigation menu</span>
+        </button>
+        <a class="brand" routerLink="/dashboard">University Resource Hub</a>
+      </div>
       <div class="user-actions">
         @if (user(); as currentUser) { <span>{{ currentUser.name }} · {{ currentUser.role }}</span> }
         <button type="button" class="text-button" (click)="logout()" [disabled]="loggingOut()">Sign out</button>
       </div>
     </header>
+    @if (mobileMenuOpen()) { <button type="button" class="menu-backdrop" aria-label="Close navigation menu" (click)="closeMenu()"></button> }
     <aside class="sidebar" [class.is-open]="mobileMenuOpen()">
-      <nav aria-label="Main navigation">
+      <nav id="main-navigation" aria-label="Main navigation">
         @if (!isAdmin()) {
           <a routerLink="/dashboard" routerLinkActive="active" (click)="closeMenu()">Dashboard</a>
           <a routerLink="/equipment" routerLinkActive="active" (click)="closeMenu()">Find resource</a>

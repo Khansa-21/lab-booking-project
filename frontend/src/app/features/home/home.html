@@ -13,18 +13,26 @@
   </header>
 
   <section class="hero" aria-labelledby="hero-title">
-    <p class="eyebrow">University resource operations</p>
-    <h1 id="hero-title">Book university resources without the hassle.</h1>
-    <p class="hero-copy">
-      Find the right lab or equipment, see real availability, and reserve practical time in one place.
-    </p>
-    <div class="hero-actions">
-      <a class="primary-action" routerLink="/login" [queryParams]="{ returnUrl: '/equipment' }">
-        Find resources
-      </a>
-      <a class="secondary-action" routerLink="/login">Sign in</a>
+    <div class="hero-content">
+      <p class="eyebrow">University resource operations</p>
+      <h1 id="hero-title">Book university resources without the hassle.</h1>
+      <p class="hero-copy">
+        Find the right lab or equipment, see real availability, and reserve practical time in one place.
+      </p>
+      <div class="hero-actions">
+        <a class="primary-action" routerLink="/login" [queryParams]="{ returnUrl: '/equipment' }">
+          Find resources
+        </a>
+        <a class="secondary-action" routerLink="/login">Sign in</a>
+      </div>
+      <p class="hero-note">Built for students, teachers, and resource administrators.</p>
     </div>
-    <p class="hero-note">Built for students, teachers, and resource administrators.</p>
+    <div class="hero-icons" aria-hidden="true">
+      <span class="equipment-icon laptop"><svg viewBox="0 0 48 48"><rect x="9" y="10" width="30" height="21" rx="2"/><path d="M5 35h38"/></svg></span>
+      <span class="equipment-icon keyboard"><svg viewBox="0 0 48 48"><rect x="7" y="16" width="34" height="18" rx="3"/><path d="M13 22h2m4 0h2m4 0h2m4 0h2m4 0h2M13 28h14m4 0h4"/></svg></span>
+      <span class="equipment-icon camera"><svg viewBox="0 0 48 48"><path d="M8 17h10l3-4h6l3 4h10v20H8z"/><circle cx="24" cy="27" r="6"/></svg></span>
+      <span class="equipment-icon calendar"><svg viewBox="0 0 48 48"><rect x="10" y="11" width="28" height="28" rx="3"/><path d="M16 8v7m16-7v7M10 20h28m-20 7h12m-12 6h7"/></svg></span>
+    </div>
   </section>
 
   <section id="how-it-works" class="process-section" aria-labelledby="how-it-works-title">

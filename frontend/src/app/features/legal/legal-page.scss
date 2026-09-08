@@ -1,0 +1,20 @@
+:host { display: block; min-height: 100vh; background: #f6f3ea; color: #1f302f; }
+
+.legal-page { width: min(100% - 2.5rem, 52rem); margin: 0 auto; padding: clamp(1rem, 4vw, 2rem) 0 4rem; }
+.legal-nav { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 4rem; padding: 0 1rem; border: 1px solid #d2ddd8; border-radius: 0.8rem; background: rgba(251, 250, 245, 0.94); box-shadow: 0 0.45rem 1.2rem rgba(35, 77, 77, 0.07); }
+.brand { color: #1f302f; font-weight: 750; text-decoration: none; }
+.back-link { color: #234d4d; font-size: 0.9rem; font-weight: 700; text-decoration: none; }
+.back-link:hover { color: #a34d21; }
+.legal-content { margin-top: 2.5rem; }
+.eyebrow { margin: 0; color: #1d666b; font-size: 0.74rem; font-weight: 800; letter-spacing: 0.13em; text-transform: uppercase; }
+h1, h2 { font-family: Georgia, 'Times New Roman', serif; }
+h1 { margin: 0.65rem 0 1rem; font-size: clamp(2.3rem, 6vw, 4rem); letter-spacing: -0.045em; line-height: 1; }
+h2 { margin: 2rem 0 0.65rem; font-size: 1.45rem; }
+p, li { color: #526562; line-height: 1.65; }
+.intro { max-width: 42rem; font-size: 1.08rem; }
+.notice { margin-top: 1.5rem; padding: 1rem 1.1rem; border-left: 3px solid #a34d21; background: #f1eadb; color: #584931; }
+ul { padding-left: 1.25rem; }
+.support-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-top: 1.4rem; }
+.support-options article { padding: 1.15rem; border: 1px solid #c8d5d0; border-radius: 0.8rem; background: rgba(255, 255, 255, 0.7); }
+.support-options h2 { margin-top: 0; font-size: 1.1rem; }
+@media (max-width: 38rem) { .support-options { grid-template-columns: 1fr; } }

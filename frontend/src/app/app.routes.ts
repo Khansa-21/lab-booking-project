@@ -33,6 +33,20 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'privacy',
+    loadComponent: () =>
+      import('./features/legal/privacy/privacy').then((module) => module.Privacy),
+  },
+  {
+    path: 'terms',
+    loadComponent: () => import('./features/legal/terms/terms').then((module) => module.Terms),
+  },
+  {
+    path: 'contact',
+    loadComponent: () =>
+      import('./features/legal/contact/contact').then((module) => module.Contact),
+  },
+  {
     path: 'dashboard',
     canActivate: [authGuard],
     loadComponent: () =>

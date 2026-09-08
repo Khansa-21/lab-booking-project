@@ -6,8 +6,8 @@
     </a>
 
     <nav aria-label="Homepage navigation">
-      <a href="#resources">Resources</a>
       <a href="#how-it-works">How it works</a>
+      <a href="#resources">Resources</a>
       <a class="nav-login" routerLink="/login">Login</a>
     </nav>
   </header>
@@ -17,7 +17,8 @@
       <p class="eyebrow">University resource operations</p>
       <h1 id="hero-title">Book university resources without the hassle.</h1>
       <p class="hero-copy">
-        Find the right lab or equipment, see real availability, and reserve practical time in one place.
+        Find the right lab or equipment, see real availability, and reserve practical time in one
+        place.
       </p>
       <div class="hero-actions">
         <a class="primary-action" routerLink="/login" [queryParams]="{ returnUrl: '/equipment' }">
@@ -26,12 +27,29 @@
         <a class="secondary-action" routerLink="/login">Sign in</a>
       </div>
       <p class="hero-note">Built for students, teachers, and resource administrators.</p>
+      <p class="creator-signature"><span aria-hidden="true">✦</span> A project by <strong class="creator-name">Khansa Ehsan</strong></p>
     </div>
     <div class="hero-icons" aria-hidden="true">
-      <span class="equipment-icon laptop"><svg viewBox="0 0 48 48"><rect x="9" y="10" width="30" height="21" rx="2"/><path d="M5 35h38"/></svg></span>
-      <span class="equipment-icon keyboard"><svg viewBox="0 0 48 48"><rect x="7" y="16" width="34" height="18" rx="3"/><path d="M13 22h2m4 0h2m4 0h2m4 0h2m4 0h2M13 28h14m4 0h4"/></svg></span>
-      <span class="equipment-icon camera"><svg viewBox="0 0 48 48"><path d="M8 17h10l3-4h6l3 4h10v20H8z"/><circle cx="24" cy="27" r="6"/></svg></span>
-      <span class="equipment-icon calendar"><svg viewBox="0 0 48 48"><rect x="10" y="11" width="28" height="28" rx="3"/><path d="M16 8v7m16-7v7M10 20h28m-20 7h12m-12 6h7"/></svg></span>
+      <span class="equipment-icon laptop"
+        ><svg viewBox="0 0 48 48">
+          <rect x="9" y="10" width="30" height="21" rx="2" />
+          <path d="M5 35h38" /></svg
+      ></span>
+      <span class="equipment-icon keyboard"
+        ><svg viewBox="0 0 48 48">
+          <rect x="7" y="16" width="34" height="18" rx="3" />
+          <path d="M13 22h2m4 0h2m4 0h2m4 0h2m4 0h2M13 28h14m4 0h4" /></svg
+      ></span>
+      <span class="equipment-icon camera"
+        ><svg viewBox="0 0 48 48">
+          <path d="M8 17h10l3-4h6l3 4h10v20H8z" />
+          <circle cx="24" cy="27" r="6" /></svg
+      ></span>
+      <span class="equipment-icon calendar"
+        ><svg viewBox="0 0 48 48">
+          <rect x="10" y="11" width="28" height="28" rx="3" />
+          <path d="M16 8v7m16-7v7M10 20h28m-20 7h12m-12 6h7" /></svg
+      ></span>
     </div>
   </section>
 
@@ -42,7 +60,10 @@
     </div>
     <ol class="process-list">
       <li><span>01</span><strong>Search</strong><small>Find a lab or resource.</small></li>
-      <li><span>02</span><strong>Check availability</strong><small>View the live time schedule.</small></li>
+      <li>
+        <span>02</span><strong>Check availability</strong
+        ><small>View the live time schedule.</small>
+      </li>
       <li><span>03</span><strong>Reserve</strong><small>Request your practical session.</small></li>
       <li><span>04</span><strong>Check in</strong><small>Use your booking QR code.</small></li>
     </ol>
@@ -54,10 +75,26 @@
       <h2 id="features-title">Beyond a normal booking form</h2>
     </div>
     <div class="feature-grid">
-      <article><span>↗</span><h3>Smart alternatives</h3><p>Get another available resource or time when your first choice is busy.</p></article>
-      <article><span>↺</span><h3>Waitlist</h3><p>Join a queue and receive a place when a suitable booking opens.</p></article>
-      <article><span>⌁</span><h3>QR check-in</h3><p>Confirm attendance quickly and release unused resource time.</p></article>
-      <article><span>✓</span><h3>Training eligibility</h3><p>Reserve specialist equipment only after the required training is complete.</p></article>
+      <article>
+        <span>↗</span>
+        <h3>Smart alternatives</h3>
+        <p>Get another available resource or time when your first choice is busy.</p>
+      </article>
+      <article>
+        <span>↺</span>
+        <h3>Waitlist</h3>
+        <p>Join a queue and receive a place when a suitable booking opens.</p>
+      </article>
+      <article>
+        <span>⌁</span>
+        <h3>QR check-in</h3>
+        <p>Confirm attendance quickly and release unused resource time.</p>
+      </article>
+      <article>
+        <span>✓</span>
+        <h3>Training eligibility</h3>
+        <p>Reserve specialist equipment only after the required training is complete.</p>
+      </article>
     </div>
   </section>
 
@@ -75,11 +112,15 @@
   </section>
 
   <footer class="home-footer">
-    <a class="home-brand" routerLink="/"><span class="brand-mark" aria-hidden="true">UR</span><span>University Resource Hub</span></a>
-    <p>Clear schedules. Fair access. Better use of campus resources.</p>
+    <div class="footer-brand-block">
+      <a class="home-brand" routerLink="/"
+        ><span class="brand-mark" aria-hidden="true">UR</span><span>University Resource Hub</span></a
+      >
+    </div>
+    <p>Clear schedules. Fair access.<br />Better use of campus resources.</p>
     <nav class="footer-links" aria-label="Footer navigation">
-      <a routerLink="/privacy">Privacy</a>
-      <a routerLink="/terms">Terms</a>
+      <a routerLink="/privacy">Privacy Policy</a>
+      <a routerLink="/terms">Terms of Use</a>
       <a routerLink="/contact">Contact</a>
       <a routerLink="/login">Sign in</a>
     </nav>

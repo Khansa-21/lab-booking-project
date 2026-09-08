@@ -12,6 +12,9 @@
 }
 
 .home-nav {
+  position: sticky;
+  top: 0.8rem;
+  z-index: 20;
   min-height: 4.05rem;
   display: flex;
   align-items: center;
@@ -43,6 +46,9 @@
 .secondary-action { border: 1px solid #b8c9c5; color: #234d4d; }
 .secondary-action:hover { background: #e3eeea; }
 .hero-note { margin: 1.45rem 0 0; color: #71817e; font-size: 0.88rem; }
+.creator-signature { display: inline-flex; align-items: center; gap: 0.45rem; margin: 1.1rem 0 0; padding: 0.35rem 0.65rem 0.35rem 0.45rem; border: 1px solid #e0b58f; border-radius: 999px; background: #f5e8d9; color: #87421e; font-size: 0.82rem; letter-spacing: 0.02em; }
+.creator-signature span { color: #1d666b; font-size: 1rem; }
+.creator-name { color: #234d4d; font-weight: 800; }
 .hero-icons { position: relative; min-height: 16rem; }
 .equipment-icon { position: absolute; display: grid; width: 5.2rem; height: 5.2rem; place-items: center; border: 1px solid rgba(185, 221, 211, 0.9); border-radius: 1rem; background: rgba(251, 250, 245, 0.85); box-shadow: 0 1rem 2rem rgba(29, 102, 107, 0.1); color: #1d666b; animation: icon-float 4.5s ease-in-out infinite; }
 .equipment-icon svg { width: 2.7rem; height: 2.7rem; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
@@ -68,16 +74,22 @@ h2 { margin: 0.5rem 0 0; font-family: Georgia, 'Times New Roman', serif; font-si
 .resource-types { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; padding: 0; margin: 2.3rem 0 0; list-style: none; }
 .resource-types li { padding: 1.25rem; border-left: 3px solid #a34d21; background: #e5ede8; color: #234d4d; font-weight: 750; }
 
-.home-footer { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 1.5rem; padding: 1.5rem 0 2rem; border-top: 1px solid #b9c9c4; }
-.home-footer p { margin: 0; color: #637572; font-size: 0.88rem; }
+.home-footer { display: grid; grid-template-columns: minmax(13rem, 1.1fr) minmax(12rem, 1fr) auto; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem; padding: 1.35rem 1.5rem; border: 1px solid #316565; border-radius: 1rem; background: #234d4d; color: #f6f3ea; box-shadow: 0 0.8rem 1.8rem rgba(35, 77, 77, 0.12); }
+.footer-brand-block { display: grid; gap: 0.5rem; }
+.home-footer .home-brand { color: #f6f3ea; }
+.home-footer .brand-mark { background: #b9ddd3; color: #174c50; }
+.home-footer p { margin: 0; color: #c7ddd5; font-size: 0.86rem; line-height: 1.5; }
 .footer-links { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0.8rem; }
+.home-footer .footer-links a { color: #f6f3ea; }
+.home-footer .footer-links a:hover { color: #e5b17d; }
 
 @media (max-width: 760px) {
   .home-nav { align-items: flex-start; padding-top: 1rem; }
   .home-nav nav { justify-content: flex-end; flex-wrap: wrap; }
   .process-section { grid-template-columns: 1fr; }
   .process-list, .feature-grid, .resource-types { grid-template-columns: repeat(2, 1fr); }
-  .home-footer { grid-template-columns: 1fr; }
+  .home-footer { grid-template-columns: 1fr; gap: 1rem; padding: 1.25rem; }
+  .footer-links { justify-content: flex-start; }
   .hero { grid-template-columns: 1fr; }
   .hero-icons { min-height: 9rem; max-width: 19rem; }
 }

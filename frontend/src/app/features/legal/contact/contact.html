@@ -9,6 +9,47 @@
       <article><h2>Equipment issue</h2><p>Stop using damaged equipment and report the issue to staff.</p></article>
       <article><h2>Account issue</h2><p>Use password reset first. For access problems, contact your administrator.</p></article>
     </section>
-    <p class="notice">Before production use, replace this page with your university's real support email, phone number, and office details.</p>
+    <form class="support-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <label>Name <input type="text" formControlName="name" autocomplete="name" /></label>
+      @if (form.controls.name.touched && form.controls.name.invalid) {
+        <small class="field-error">Enter your name (at least 2 characters).</small>
+      }
+
+      <label>Email <input type="email" formControlName="email" autocomplete="email" /></label>
+      @if (form.controls.email.touched && form.controls.email.invalid) {
+        <small class="field-error">Enter a valid email address.</small>
+      }
+
+      <label>Topic
+        <select formControlName="topic">
+          <option value="">Select a topic</option>
+          <option value="Booking">Booking</option>
+          <option value="Account">Account</option>
+          <option value="Training">Training</option>
+          <option value="Equipment">Equipment</option>
+        </select>
+      </label>
+      @if (form.controls.topic.touched && form.controls.topic.invalid) {
+        <small class="field-error">Select a topic.</small>
+      }
+
+      <label>Message <textarea rows="6" formControlName="message"></textarea></label>
+      @if (form.controls.message.touched && form.controls.message.invalid) {
+        <small class="field-error">Message must be between 10 and 1000 characters.</small>
+      }
+
+      <button type="submit">Prepare email</button>
+      @if (submitted()) {
+        <p class="success-message" role="status">Your message is ready.</p>
+        <a class="email-launch-link" [href]="emailLink()">Open your email app</a>
+      }
+    </form>
+    <p class="notice">The form opens your email app. Replace <strong>resource-support@example.edu</strong> in the contact page with your university's real support email before production use.</p>
   </article>
+  <footer class="legal-footer">
+    <span>University Resource Hub</span>
+    <nav class="legal-footer-links" aria-label="Legal navigation">
+      <a routerLink="/">Home</a><a routerLink="/privacy">Privacy Policy</a><a routerLink="/terms">Terms of Use</a><a routerLink="/contact">Contact</a>
+    </nav>
+  </footer>
 </main>

@@ -14,8 +14,10 @@ export class Home {
   private readonly router = inject(Router);
 
   constructor() {
-    if (this.auth.isAuthenticated()) {
-      void this.router.navigateByUrl(this.auth.isAdmin() ? '/admin' : '/dashboard');
-    }
+    void this.auth.restoreSession().then(() => {
+      if (this.auth.isAuthenticated()) {
+        void this.router.navigateByUrl(this.auth.isAdmin() ? '/admin' : '/dashboard');
+      }
+    });
   }
 }

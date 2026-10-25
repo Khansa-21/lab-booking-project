@@ -27,9 +27,9 @@ export class Login {
   });
 
   constructor() {
-    if (this.auth.isAuthenticated()) {
-      void this.router.navigate([this.defaultHome()]);
-    }
+    void this.auth.restoreSession().then(() => {
+      if (this.auth.isAuthenticated()) void this.router.navigate([this.defaultHome()]);
+    });
   }
 
   submit(): void {

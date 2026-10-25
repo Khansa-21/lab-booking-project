@@ -45,6 +45,7 @@ Public signup creates only a `STUDENT`. Admin accounts are not created from a pu
 ## Technology used
 
 - Frontend: Angular 22, TypeScript, Reactive Forms, RxJS, Angular Router, QRCode
+- Styling: SCSS with global styles and component-scoped styles
 - Backend: Node.js, Express 5, TypeScript
 - Database: Microsoft SQL Server, Azure SQL Database, Sequelize ORM
 - Security: Zod, bcrypt, JWT in HttpOnly cookies, CORS, cookie-parser
@@ -93,6 +94,12 @@ frontend/     Angular pages, services, guards, and layouts
 backend/      Express API, database models, migrations, seeders, and services
 README.md     Project guide
 ```
+
+## Styling
+
+- Global styles and shared form/control defaults live in `frontend/src/styles.scss`.
+- Page and component styles are kept in adjacent `.scss` files and loaded through Angular component `styleUrl` metadata.
+- Angular is configured to use SCSS for component styles; the production build checks component stylesheet size budgets.
 
 ## Local setup
 
@@ -148,6 +155,7 @@ Open `http://localhost:4200`.
 # Backend
 npm run dev
 npm run build
+npm test
 npm run db:migrate
 npm run db:migrate:status
 npm run db:seed
@@ -177,7 +185,8 @@ The response does not reveal whether an account exists.
 - Azure SQL Database stores production data.
 - Store database details, JWT secret, and Brevo key in Azure App Service environment variables.
 - Use `DB_ENCRYPT=true` and `DB_TRUST_SERVER_CERTIFICATE=false` with Azure SQL.
-- Add the Azure App Service outbound IP addresses to the Azure SQL firewall if needed.
+- Add the App Service's outbound IPv4 addresses (including additional outbound addresses) to the Azure SQL firewall. For local development, allow the developer machine's current public IPv4 address separately.
+- Confirm the SQL server allows public network access when connecting over the public endpoint and that outbound TCP port 1433 is available on the client network.
 - The scheduler runs on backend startup and every minute. On a restart, it catches up missed no-show and completion checks.
 
 ## Future improvements

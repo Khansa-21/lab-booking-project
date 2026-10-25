@@ -18,6 +18,8 @@ export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly userState = signal<UserProfile | null>(null);
   private readonly initializedState = signal(false);
+  private sessionRestoration?: Promise<void>;
+  private authStateVersion = 0;
 
   readonly user = this.userState.asReadonly();
   readonly initialized = this.initializedState.asReadonly();
@@ -27,19 +29,23 @@ export class AuthService {
   signup(request: SignupRequest): Observable<AuthResponse> {
     return this.http
       .post<AuthResponse>(`${environment.apiUrl}/auth/signup`, request)
-      .pipe(tap((response) => this.userState.set(response.user)));
+      .pipe(tap((response) => this.setUser(response.user)));
   }
 
   login(request: LoginRequest): Observable<AuthResponse> {
     return this.http
       .post<AuthResponse>(`${environment.apiUrl}/auth/login`, request)
-      .pipe(tap((response) => this.userState.set(response.user)));
+      .pipe(tap((response) => this.setUser(response.user)));
   }
 
   logout(): Observable<void> {
-    return this.http
-      .post<void>(`${environment.apiUrl}/auth/logout`, {})
-      .pipe(tap(() => this.userState.set(null)));
+    this.authStateVersion += 1;
+    return this.http.post<void>(`${environment.apiUrl}/auth/logout`, {}).pipe(
+      tap(() => {
+        this.userState.set(null);
+        this.initializedState.set(true);
+      }),
+    );
   }
 
   forgotPassword(request: ForgotPasswordRequest): Observable<void> {
@@ -50,19 +56,30 @@ export class AuthService {
     return this.http.post<void>(`${environment.apiUrl}/auth/reset-password`, request);
   }
 
-  async restoreSession(): Promise<void> {
-    if (this.initializedState()) return;
+  restoreSession(): Promise<void> {
+    if (this.initializedState()) return Promise.resolve();
+    if (this.sessionRestoration) return this.sessionRestoration;
 
-    try {
-      const response = await firstValueFrom(
-        this.http.get<AuthResponse>(`${environment.apiUrl}/auth/me`),
-      );
-      this.userState.set(response.user);
-    } catch {
-      this.userState.set(null);
-    } finally {
-      this.initializedState.set(true);
-    }
+    const version = this.authStateVersion;
+    this.sessionRestoration = (async () => {
+      try {
+        const response = await firstValueFrom(
+          this.http.get<AuthResponse>(`${environment.apiUrl}/auth/me`),
+        );
+        if (this.authStateVersion === version) this.userState.set(response.user);
+      } catch {
+        if (this.authStateVersion === version) this.userState.set(null);
+      } finally {
+        this.initializedState.set(true);
+      }
+    })();
+    return this.sessionRestoration;
+  }
+
+  private setUser(user: UserProfile): void {
+    this.authStateVersion += 1;
+    this.userState.set(user);
+    this.initializedState.set(true);
   }
 }
 

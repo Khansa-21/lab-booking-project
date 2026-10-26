@@ -28,7 +28,9 @@ export class ResourceManagement implements OnInit {
   readonly editingEquipmentName = signal('');
   readonly loading = signal(true);
   readonly saving = signal(false);
+  readonly deleting = signal(false);
   readonly errorMessage = signal('');
+  readonly successMessage = signal('');
   readonly statuses: EquipmentStatus[] = ['AVAILABLE', 'UNAVAILABLE', 'MAINTENANCE'];
   readonly audiences: BookingAudience[] = ['STUDENT_AND_TEACHER', 'TEACHER_ONLY'];
 
@@ -111,6 +113,29 @@ export class ResourceManagement implements OnInit {
     });
   }
 
+  deleteCategory(category: AdminCategory): void {
+    if (this.deleting()) return;
+    if (!confirm(`Delete category "${category.name}", its resources, and all linked booking, waitlist, and training history? This cannot be undone.`)) return;
+
+    this.deleting.set(true);
+    this.errorMessage.set('');
+    this.successMessage.set('');
+    this.adminResources
+      .deleteCategory(category.id)
+      .pipe(finalize(() => this.deleting.set(false)))
+      .subscribe({
+        next: () => {
+          if (this.editingCategoryId() === category.id) this.resetCategoryForm();
+          if (this.equipment().some((item) => item.id === this.editingEquipmentId() && item.categoryId === category.id)) {
+            this.resetEquipmentForm();
+          }
+          this.successMessage.set(`Category "${category.name}" and its linked records were deleted.`);
+          this.loadResources();
+        },
+        error: (error) => this.errorMessage.set(getApiErrorMessage(error)),
+      });
+  }
+
   editEquipment(item: Equipment): void {
     this.editingEquipmentId.set(item.id);
     this.editingEquipmentName.set(item.name);
@@ -126,6 +151,26 @@ export class ResourceManagement implements OnInit {
       requiresTraining: item.requiresTraining,
       maxBookingHours: Number(item.maxBookingHours),
     });
+  }
+
+  deleteEquipment(item: Equipment): void {
+    if (this.deleting()) return;
+    if (!confirm(`Delete resource "${item.name}" and all linked booking, waitlist, and training history? This cannot be undone.`)) return;
+
+    this.deleting.set(true);
+    this.errorMessage.set('');
+    this.successMessage.set('');
+    this.adminResources
+      .deleteEquipment(item.id)
+      .pipe(finalize(() => this.deleting.set(false)))
+      .subscribe({
+        next: () => {
+          if (this.editingEquipmentId() === item.id) this.resetEquipmentForm();
+          this.successMessage.set(`Resource "${item.name}" and its linked records were deleted.`);
+          this.loadResources();
+        },
+        error: (error) => this.errorMessage.set(getApiErrorMessage(error)),
+      });
   }
 
   resetCategoryForm(): void {

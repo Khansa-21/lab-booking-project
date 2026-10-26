@@ -53,11 +53,19 @@ export class AdminResourceService {
     return this.http.patch<{ category: AdminCategory }>(`${this.apiUrl}/categories/${id}`, request);
   }
 
+  deleteCategory(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/categories/${id}`);
+  }
+
   createEquipment(request: EquipmentRequest): Observable<{ equipment: Equipment }> {
     return this.http.post<{ equipment: Equipment }>(`${this.apiUrl}/equipment`, request);
   }
 
   updateEquipment(id: number, request: EquipmentRequest): Observable<{ equipment: Equipment }> {
     return this.http.patch<{ equipment: Equipment }>(`${this.apiUrl}/equipment/${id}`, request);
+  }
+
+  deleteEquipment(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/equipment/${id}`);
   }
 }

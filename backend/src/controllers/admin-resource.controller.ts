@@ -3,6 +3,8 @@ import { RequestHandler } from 'express';
 import {
   createCategory,
   createEquipment,
+  deleteCategory,
+  deleteEquipment,
   getAdminResources,
   updateCategory,
   updateEquipment,
@@ -28,8 +30,18 @@ export const updateCategoryController: RequestHandler = async (request, response
   });
 };
 
+export const deleteCategoryController: RequestHandler = async (request, response) => {
+  await deleteCategory((request.validatedParams as { id: number }).id);
+  response.status(204).send();
+};
+
 export const createEquipmentController: RequestHandler = async (request, response) => {
   response.status(201).json({ equipment: await createEquipment(request.body as CreateEquipmentInput) });
+};
+
+export const deleteEquipmentController: RequestHandler = async (request, response) => {
+  await deleteEquipment((request.validatedParams as { id: number }).id);
+  response.status(204).send();
 };
 
 export const updateEquipmentController: RequestHandler = async (request, response) => {

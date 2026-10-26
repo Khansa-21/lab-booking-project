@@ -4,6 +4,7 @@
   <p class="subtitle">Create records here so students can find and book university resources.</p>
 
   @if (errorMessage()) { <div class="alert" role="alert">{{ errorMessage() }}</div> }
+  @if (successMessage()) { <p class="success" role="status">{{ successMessage() }}</p> }
 
   <section class="management-grid">
     <article class="management-panel">
@@ -22,7 +23,7 @@
 
       <h3>Categories</h3>
       @for (category of categories(); track category.id) {
-        <div class="data-row"><span><strong>{{ category.name }}</strong><small>{{ category.isActive ? 'Active' : 'Inactive' }}</small></span><button type="button" class="text-action" (click)="editCategory(category)">Edit</button></div>
+        <div class="data-row"><span><strong>{{ category.name }}</strong><small>{{ category.isActive ? 'Active' : 'Inactive' }}</small></span><span class="row-actions"><button type="button" class="text-action" (click)="editCategory(category)">Edit</button><button type="button" class="delete-action" [disabled]="deleting()" (click)="deleteCategory(category)">Delete</button></span></div>
       } @empty { <p>No categories yet.</p> }
     </article>
 
@@ -62,7 +63,7 @@
       <p>Loading resources…</p>
     } @else {
       @for (item of equipment(); track item.id) {
-        <article class="resource-row"><div><strong>{{ item.name }}</strong><p>{{ item.category.name }} · {{ item.location }} · {{ item.status }}</p></div><button type="button" class="text-action" (click)="editEquipment(item)">Edit</button></article>
+        <article class="resource-row"><div><strong>{{ item.name }}</strong><p>{{ item.category.name }} · {{ item.location }} · {{ item.status }}</p></div><span class="row-actions"><button type="button" class="text-action" (click)="editEquipment(item)">Edit</button><button type="button" class="delete-action" [disabled]="deleting()" (click)="deleteEquipment(item)">Delete</button></span></article>
       } @empty { <p>No resources yet. Add the first resource above.</p> }
     }
   </section>

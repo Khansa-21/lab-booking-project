@@ -1,7 +1,7 @@
 <main class="student-dashboard">
   <section class="dashboard-intro">
     @if (user(); as currentUser) {
-      <p class="eyebrow">Student workspace</p>
+      <p class="eyebrow">{{ currentUser.role === 'TEACHER' ? 'Teacher workspace' : 'Student workspace' }}</p>
       <h1>{{ greeting() }}, {{ currentUser.name }}</h1>
       <p class="subtitle">Manage your university resources and bookings.</p>
     }

@@ -1,7 +1,8 @@
-import { UniqueConstraintError } from 'sequelize';
+import { Transaction, UniqueConstraintError } from 'sequelize';
 
+import { sequelize } from '../config/database.js';
 import { AppError } from '../errors/app-error.js';
-import { Category, Equipment } from '../models/index.js';
+import { Category, Equipment, Reservation, TrainingRecord, WaitlistEntry } from '../models/index.js';
 import {
   CreateCategoryInput,
   CreateEquipmentInput,
@@ -56,6 +57,25 @@ export async function updateCategory(
   }
 }
 
+export async function deleteCategory(id: number): Promise<void> {
+  await sequelize.transaction(async (transaction) => {
+    const category = await Category.findByPk(id, { transaction });
+    if (!category) throw new AppError(404, 'Category not found.');
+
+    const equipment = await Equipment.findAll({
+      where: { categoryId: id },
+      attributes: ['id'],
+      transaction,
+    });
+    for (const item of equipment) {
+      await deleteEquipmentRecords(item.id, transaction);
+    }
+
+    await Equipment.destroy({ where: { categoryId: id }, transaction });
+    await category.destroy({ transaction });
+  });
+}
+
 export async function createEquipment(input: CreateEquipmentInput): Promise<Equipment> {
   await requireActiveCategory(input.categoryId);
   return Equipment.create({
@@ -75,6 +95,25 @@ export async function updateEquipment(
 
   await equipment.update(input);
   return equipment;
+}
+
+export async function deleteEquipment(id: number): Promise<void> {
+  await sequelize.transaction(async (transaction) => {
+    const equipment = await Equipment.findByPk(id, { transaction });
+    if (!equipment) throw new AppError(404, 'Resource not found.');
+
+    await deleteEquipmentRecords(id, transaction);
+    await equipment.destroy({ transaction });
+  });
+}
+
+async function deleteEquipmentRecords(
+  equipmentId: number,
+  transaction: Transaction,
+): Promise<void> {
+  await Reservation.destroy({ where: { equipmentId }, transaction });
+  await WaitlistEntry.destroy({ where: { equipmentId }, transaction });
+  await TrainingRecord.destroy({ where: { equipmentId }, transaction });
 }
 
 async function requireActiveCategory(categoryId: number): Promise<void> {

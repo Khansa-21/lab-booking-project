@@ -1,8 +1,8 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { finalize } from 'rxjs';
 
-import { getApiErrorMessage } from '../../auth/auth';
+import { AuthService, getApiErrorMessage } from '../../auth/auth';
 import { AdminUser, AdminUserService } from '../admin-user';
 
 @Component({
@@ -14,10 +14,20 @@ import { AdminUser, AdminUserService } from '../admin-user';
 export class UserManagement implements OnInit {
   private readonly formBuilder = inject(FormBuilder);
   private readonly adminUsers = inject(AdminUserService);
+  private readonly auth = inject(AuthService);
 
   readonly users = signal<AdminUser[]>([]);
+  readonly currentUser = this.auth.user;
+  readonly currentPage = signal(1);
+  readonly pageSize = 10;
+  readonly totalPages = computed(() => Math.max(1, Math.ceil(this.users().length / this.pageSize)));
+  readonly paginatedUsers = computed(() => {
+    const start = (this.currentPage() - 1) * this.pageSize;
+    return this.users().slice(start, start + this.pageSize);
+  });
   readonly loading = signal(true);
   readonly saving = signal(false);
+  readonly deletingUserId = signal<number | null>(null);
   readonly errorMessage = signal('');
   readonly successMessage = signal('');
   readonly form = this.formBuilder.nonNullable.group({
@@ -64,13 +74,40 @@ export class UserManagement implements OnInit {
       });
   }
 
+  setPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages()) this.currentPage.set(page);
+  }
+
+  deleteUser(user: AdminUser): void {
+    if (user.id === this.currentUser()?.id || this.deletingUserId() !== null) return;
+    if (!confirm(`Delete ${user.name} (${user.email}) and all linked bookings, waitlist entries, and training records? This cannot be undone.`)) return;
+
+    this.deletingUserId.set(user.id);
+    this.errorMessage.set('');
+    this.successMessage.set('');
+    this.adminUsers
+      .deleteUser(user.id)
+      .pipe(finalize(() => this.deletingUserId.set(null)))
+      .subscribe({
+        next: () => {
+          this.users.update((users) => users.filter((item) => item.id !== user.id));
+          this.currentPage.set(Math.min(this.currentPage(), this.totalPages()));
+          this.successMessage.set(`${user.name} and linked history were deleted.`);
+        },
+        error: (error) => this.errorMessage.set(getApiErrorMessage(error)),
+      });
+  }
+
   private loadUsers(): void {
     this.loading.set(true);
     this.adminUsers
       .getUsers()
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
-        next: (response) => this.users.set(response.users),
+        next: (response) => {
+          this.users.set(response.users);
+          this.currentPage.set(Math.min(this.currentPage(), this.totalPages()));
+        },
         error: (error) => this.errorMessage.set(getApiErrorMessage(error)),
       });
   }

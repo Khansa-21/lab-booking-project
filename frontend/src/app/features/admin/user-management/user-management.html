@@ -1,6 +1,6 @@
 <main class="user-management-page">
   <p class="eyebrow">Access management</p>
-  <h1>Manage teaching accounts</h1>
+  <h1>Manage accounts</h1>
   <p class="subtitle">Public signup creates students only. Administrators create teacher accounts here.</p>
 
   @if (errorMessage()) { <div class="alert" role="alert">{{ errorMessage() }}</div> }
@@ -22,16 +22,34 @@
     </article>
 
     <article class="panel">
-      <h2>Account register</h2>
+      <h2>Account register <span class="user-count">({{ users().length }})</span></h2>
       @if (loading()) {
         <p>Loading accounts...</p>
       } @else {
-        @for (user of users(); track user.id) {
+        @for (user of paginatedUsers(); track user.id) {
           <div class="user-row">
             <span><strong>{{ user.name }}</strong><small>{{ user.email }}</small></span>
-            <span class="role">{{ user.role }}</span>
+            <span class="user-actions">
+              <span class="role">{{ user.role }}</span>
+              <button
+                type="button"
+                class="delete-button"
+                [disabled]="user.id === currentUser()?.id || deletingUserId() !== null"
+                [attr.aria-label]="'Delete ' + user.name"
+                (click)="deleteUser(user)"
+              >{{ deletingUserId() === user.id ? 'Deleting...' : 'Delete' }}</button>
+            </span>
           </div>
         } @empty { <p>No accounts found.</p> }
+        @if (users().length > pageSize) {
+          <nav class="pagination" aria-label="Account pages">
+            <span>Page {{ currentPage() }} of {{ totalPages() }}</span>
+            <div>
+              <button type="button" class="secondary-button" [disabled]="currentPage() === 1" (click)="setPage(currentPage() - 1)">Previous</button>
+              <button type="button" class="secondary-button" [disabled]="currentPage() === totalPages()" (click)="setPage(currentPage() + 1)">Next</button>
+            </div>
+          </nav>
+        }
       }
     </article>
   </section>

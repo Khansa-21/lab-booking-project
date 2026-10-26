@@ -27,4 +27,8 @@ export class AdminUserService {
   createTeacher(request: CreateTeacherRequest): Observable<{ teacher: AdminUser }> {
     return this.http.post<{ teacher: AdminUser }>(`${this.apiUrl}/teachers`, request);
   }
+
+  deleteUser(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
 }

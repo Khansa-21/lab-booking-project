@@ -7,4 +7,11 @@
 .user-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.8rem 0; border-top: 1px solid #edf0f5; }
 .user-row span:first-child { display: grid; gap: 0.2rem; }
 .role { padding: 0.2rem 0.5rem; border-radius: 999px; background: #dfe8e3; color: #255b5a; font-size: 0.75rem; font-weight: 700; }
+.user-count { color: #667085; font-size: 0.9rem; }
+.user-actions { display: flex; align-items: center; gap: 0.6rem; }
+.delete-button { margin: 0; padding: 0.4rem 0.65rem; background: #fff1f0; color: #a4262c; }
+.delete-button:disabled { cursor: not-allowed; opacity: 0.55; }
+.pagination { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-top: 1rem; border-top: 1px solid #edf0f5; color: #667085; font-size: 0.9rem; }
+.pagination div { display: flex; gap: 0.5rem; }
+.pagination button { margin: 0; }
 @media (max-width: 52rem) { .user-management-page { padding: 1.25rem; } .user-grid { grid-template-columns: 1fr; } }

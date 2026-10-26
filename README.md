@@ -29,6 +29,8 @@ This system helps students and staff find resources, check availability, reserve
 - QR/code check-in
 - Automatic no-show release and booking completion checks
 - Admin pages for users, resources, approvals, training, check-ins, and operations
+- Admin deletion for users, categories, and resources, including their linked booking, waitlist, and training history
+- Paginated account register for managing larger user lists
 - Mobile menu for small screens
 
 ## Roles
@@ -37,8 +39,8 @@ This system helps students and staff find resources, check availability, reserve
 | --- | --- |
 | Guest | View the homepage, sign up, and sign in |
 | Student | Search, reserve, join a waitlist, view eligibility, and show QR check-in |
-| Teacher | Student actions plus approvals, training records, and check-ins |
-| Admin | Manage users, resources, approvals, training, check-ins, and daily operations |
+| Teacher | Teacher workspace with student actions plus approvals, training records, and check-ins |
+| Admin | Manage users and resources, approvals, training, check-ins, and daily operations |
 
 Public signup creates only a `STUDENT`. Admin accounts are not created from a public browser form.
 
@@ -86,6 +88,13 @@ The time clash rule is:
 ```text
 newStart < existingEnd AND newEnd > existingStart
 ```
+
+## Admin management
+
+- The dashboard identifies teacher accounts with a Teacher workspace label.
+- The account register displays ten users per page.
+- Admins can delete users, equipment resources, and categories. Deleting a user also deletes that user's bookings, waitlist entries, and training records. Deleting a resource or category removes its associated bookings, waitlist entries, and training records as well.
+- The admin account currently signed in cannot delete itself. Deletions require confirmation and permanently remove the linked history.
 
 ## Project folders
 

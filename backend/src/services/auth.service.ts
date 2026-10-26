@@ -103,11 +103,18 @@ export async function requestPasswordReset(email: string): Promise<void> {
   const resetUrl = new URL('/reset-password', environment.frontendOrigin);
   resetUrl.searchParams.set('token', token);
 
-  await sendPasswordResetEmail({
-    name: user.name,
-    email: user.email,
-    resetUrl: resetUrl.toString(),
-  });
+  try {
+    await sendPasswordResetEmail({
+      name: user.name,
+      email: user.email,
+      resetUrl: resetUrl.toString(),
+    });
+  } catch (error) {
+    console.error('Password reset email failed.', error);
+    user.passwordResetTokenHash = null;
+    user.passwordResetExpiresAt = null;
+    await user.save();
+  }
 }
 
 export async function resetPassword(input: ResetPasswordInput): Promise<void> {

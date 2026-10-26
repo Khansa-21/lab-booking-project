@@ -88,6 +88,24 @@ export function getApiErrorMessage(error: unknown): string {
     return 'Something went wrong. Please try again.';
   }
 
-  const response = error.error as ApiErrorResponse | undefined;
-  return response?.error?.message ?? 'Unable to complete the request.';
+  const raw = error.error as ApiErrorResponse | { message?: string; error?: { message?: string } } | string | undefined;
+
+  if (typeof raw === 'string' && raw.trim()) {
+    return raw;
+  }
+
+  if (raw && typeof raw === 'object') {
+    const apiError = 'error' in raw ? raw.error : undefined;
+    const directMessage = 'message' in raw ? raw.message : undefined;
+
+    if (typeof apiError?.message === 'string' && apiError.message.trim()) {
+      return apiError.message;
+    }
+
+    if (typeof directMessage === 'string' && directMessage.trim()) {
+      return directMessage;
+    }
+  }
+
+  return error.message || 'Unable to complete the request.';
 }
